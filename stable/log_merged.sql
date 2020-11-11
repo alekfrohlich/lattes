@@ -1,4 +1,4 @@
-/* Merge */
+/* Merged */
 
 CREATE TABLE Atuacao (
 );
@@ -47,11 +47,6 @@ CREATE TABLE Editora (
     Nome varchar(20),
     cidade varchar(20),
     codEditora integer PRIMARY KEY
-);
-
-CREATE TABLE PessoaAutor (
-    nomePA varchar(20),
-    codPA integer PRIMARY KEY
 );
 
 CREATE TABLE Pessoa (
@@ -122,19 +117,9 @@ CREATE TABLE Pais (
 
 CREATE TABLE PeriodoSanduiche (
     codPeriodoSand integer PRIMARY KEY,
-    fk_PessoaOrientador_codPessoa integer,
-    fk_InstituicaoFormacao_codI integer,
+    fk_Pessoa_codPessoa integer,
+    fk_Instituicao_codInstituicao integer,
     fk_FormacaoAcad_codFormacao integer
-);
-
-CREATE TABLE PessoaOrientador (
-    codPessoa integer PRIMARY KEY,
-    Nome varchar(20)
-);
-
-CREATE TABLE InstituicaoFormacao (
-    codI integer PRIMARY KEY,
-    nomeI varchar(20)
 );
 
 CREATE TABLE FormacaoAcad (
@@ -142,9 +127,9 @@ CREATE TABLE FormacaoAcad (
     anoInicio integer,
     codFormacao integer PRIMARY KEY,
     anoFim integer,
-    fk_InstituicaoFormacao_codI integer,
-    fk_PessoaOrientador_codPessoa integer,
-    fk_CV_lattesID integer,
+    fk_Instituicao_codInstituicao integer,
+    fk_Pessoa_codPessoa integer,
+    fk_CVLattes_LattesID integer,
     fk_Titulacao_codTit varchar(40),
     fk_ProgramaDePesquisa_codProgramaDePesquisa integer,
     fk_Conceito_codConceito integer
@@ -156,12 +141,8 @@ CREATE TABLE FormacaoComplementar (
     codFormComp integer PRIMARY KEY,
     anoIn integer,
     Titulo varchar(40),
-    fk_InstituicaoFormacao_codI integer,
-    fk_CV_lattesID integer
-);
-
-CREATE TABLE CV (
-    lattesID integer PRIMARY KEY
+    fk_Instituicao_codInstituicao integer,
+    fk_CVLattes_LattesID integer
 );
 
 CREATE TABLE Titulacao (
@@ -184,19 +165,9 @@ CREATE TABLE NaturezaFinanciamento (
     nomeNatureza varchar(20)
 );
 
-CREATE TABLE InstituicaoFinanciamento (
-    codI integer PRIMARY KEY,
-    Nome varchar(20)
-);
-
 CREATE TABLE Edital (
     numEdital integer PRIMARY KEY,
     nomeEdital varchar(20)
-);
-
-CREATE TABLE PessoaProjeto (
-    Nome varchar(20),
-    codP integer PRIMARY KEY
 );
 
 CREATE TABLE NaturezaProjeto (
@@ -216,13 +187,13 @@ CREATE TABLE Projeto_Financiamento (
     descricao varchar(20),
     Titulo varchar(20),
     qtdMestrado integer,
-    fk_PessoaProjeto_codP integer,
+    fk_Pessoa_codPessoa integer,
     fk_NaturezaProjeto_codNatureza integer,
     Valor real,
     fk_NaturezaFinanciamento_codNaturezaFinanciamento integer,
     fk_Edital_numEdital integer,
     Processo integer,
-    fk_InstituicaoFinanciamento_codI integer,
+    fk_Instituicao_codInstituicao integer,
     fk_Moeda_codMoeda integer,
     fk_Situacao_codSituacao integer
 );
@@ -244,22 +215,22 @@ CREATE TABLE CitacoesPelaFerr (
 );
 
 CREATE TABLE AutorArtigo (
-    fk_PessoaAutor_codPA integer,
+    fk_Pessoa_codPessoa integer,
     fk_ArtigoEmPeriodico_codArtigoEmPer integer
 );
 
 CREATE TABLE AutorLivro (
-    fk_PessoaAutor_codPA integer,
+    fk_Pessoa_codPessoa integer,
     fk_Livro_codLivro integer
 );
 
 CREATE TABLE OrganizadorLivro (
-    fk_PessoaAutor_codPA integer,
+    fk_Pessoa_codPessoa integer,
     fk_Livro_codLivro integer
 );
 
 CREATE TABLE IntegranteProjeto (
-    fk_PessoaProjeto_codP integer,
+    fk_Pessoa_codPessoa integer,
     fk_Projeto_Financiamento_codProjeto integer
 );
  
@@ -314,13 +285,13 @@ ALTER TABLE Estado ADD CONSTRAINT FK_Estado_2
     ON DELETE CASCADE;
  
 ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_2
-    FOREIGN KEY (fk_PessoaOrientador_codPessoa)
-    REFERENCES PessoaOrientador (codPessoa)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
 ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_3
-    FOREIGN KEY (fk_InstituicaoFormacao_codI)
-    REFERENCES InstituicaoFormacao (codI)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
 ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_4
@@ -329,18 +300,18 @@ ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_4
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_2
-    FOREIGN KEY (fk_InstituicaoFormacao_codI)
-    REFERENCES InstituicaoFormacao (codI)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_3
-    FOREIGN KEY (fk_PessoaOrientador_codPessoa)
-    REFERENCES PessoaOrientador (codPessoa)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_4
-    FOREIGN KEY (fk_CV_lattesID)
-    REFERENCES CV (lattesID)
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_5
@@ -359,18 +330,18 @@ ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_7
     ON DELETE SET NULL;
  
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_2
-    FOREIGN KEY (fk_InstituicaoFormacao_codI)
-    REFERENCES InstituicaoFormacao (codI)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_3
-    FOREIGN KEY (fk_CV_lattesID)
-    REFERENCES CV (lattesID)
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
 ALTER TABLE Projeto_Financiamento ADD CONSTRAINT FK_Projeto_Financiamento_2
-    FOREIGN KEY (fk_PessoaProjeto_codP)
-    REFERENCES PessoaProjeto (codP)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
 ALTER TABLE Projeto_Financiamento ADD CONSTRAINT FK_Projeto_Financiamento_3
@@ -387,8 +358,8 @@ ALTER TABLE Projeto_Financiamento ADD CONSTRAINT FK_Projeto_Financiamento_5
     REFERENCES Edital (numEdital);
  
 ALTER TABLE Projeto_Financiamento ADD CONSTRAINT FK_Projeto_Financiamento_6
-    FOREIGN KEY (fk_InstituicaoFinanciamento_codI)
-    REFERENCES InstituicaoFinanciamento (codI);
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao);
  
 ALTER TABLE Projeto_Financiamento ADD CONSTRAINT FK_Projeto_Financiamento_7
     FOREIGN KEY (fk_Moeda_codMoeda)
@@ -410,8 +381,8 @@ ALTER TABLE CitacoesPelaFerr ADD CONSTRAINT FK_CitacoesPelaFerr_2
     ON DELETE SET NULL;
  
 ALTER TABLE AutorArtigo ADD CONSTRAINT FK_AutorArtigo_1
-    FOREIGN KEY (fk_PessoaAutor_codPA)
-    REFERENCES PessoaAutor (codPA)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE RESTRICT;
  
 ALTER TABLE AutorArtigo ADD CONSTRAINT FK_AutorArtigo_2
@@ -420,8 +391,8 @@ ALTER TABLE AutorArtigo ADD CONSTRAINT FK_AutorArtigo_2
     ON DELETE SET NULL;
  
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_1
-    FOREIGN KEY (fk_PessoaAutor_codPA)
-    REFERENCES PessoaAutor (codPA)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE RESTRICT;
  
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_2
@@ -430,8 +401,8 @@ ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_2
     ON DELETE SET NULL;
  
 ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_1
-    FOREIGN KEY (fk_PessoaAutor_codPA)
-    REFERENCES PessoaAutor (codPA)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE RESTRICT;
  
 ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_2
@@ -440,8 +411,8 @@ ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_2
     ON DELETE SET NULL;
  
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_1
-    FOREIGN KEY (fk_PessoaProjeto_codP)
-    REFERENCES PessoaProjeto (codP)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE RESTRICT;
  
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_2
