@@ -1,8 +1,4 @@
--- TODO:
--- pessoa: nome em citacoes
--- logradouro: nome
-
-insert into pessoa (1, "Vania Bogorny")
+insert into pessoa () values (1, "Vania Bogorny")
 insert into instituicao ("Universidade Federal de Santa Catarina", "UFSC", 1)
 insert into tipologradouro (1, "Rua")
 insert into bairro ("Trindade", 1)
