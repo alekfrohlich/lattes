@@ -3,10 +3,6 @@ CREATE TABLE Conceito (
     nomeConceito varchar(20)
 );
 
-CREATE TABLE CV (
-    lattesID integer PRIMARY KEY
-);
-
 CREATE TABLE ProgramaDePesquisa (
     nomePrograma varchar(20),
     codProgramaDePesquisa integer PRIMARY KEY
@@ -24,9 +20,9 @@ CREATE TABLE FormacaoAcad (
     anoObtencao integer,
     fk_Conceito_codConceito integer,
     fk_ProgramaDePesquisa_codProgramaDePesquisa integer,
-    fk_CV_lattesID integer,
+    fk_CVLattes_LattesID integer,
     fk_Titulacao_codTit varchar(40),
-    fk_PessoaOrientador_codPessoa integer,
+    fk_Pessoa_codPessoa integer,
     fk_InstituicaoFormacao_codI integer
 );
 
@@ -36,7 +32,7 @@ CREATE TABLE FormacaoComplementar (
     Titulo varchar(40),
     anoIn integer,
     codFormComp integer PRIMARY KEY,
-    fk_CV_lattesID integer,
+    fk_CVLattes_LattesID integer,
     fk_InstituicaoFormacao_codI integer
 );
 
@@ -49,12 +45,19 @@ CREATE TABLE PeriodoSanduiche (
     codPeriodoSand integer PRIMARY KEY,
     fk_InstituicaoFormacao_codI integer,
     fk_FormacaoAcad_codFormacao integer,
-    fk_PessoaOrientador_codPessoa integer
+    fk_Pessoa_codPessoa integer
 );
 
-CREATE TABLE PessoaOrientador (
+CREATE TABLE Pessoa (
     codPessoa integer PRIMARY KEY,
     Nome varchar(20)
+);
+
+CREATE TABLE CVLattes (
+    telefone integer,
+    homepage varchar(40),
+    OrchidID integer,
+    LattesID integer PRIMARY KEY
 );
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_2
@@ -68,8 +71,8 @@ ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_3
     ON DELETE SET NULL;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_4
-    FOREIGN KEY (fk_CV_lattesID)
-    REFERENCES CV (lattesID)
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_5
@@ -78,8 +81,8 @@ ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_5
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_6
-    FOREIGN KEY (fk_PessoaOrientador_codPessoa)
-    REFERENCES PessoaOrientador (codPessoa)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_7
@@ -88,8 +91,8 @@ ALTER TABLE FormacaoAcad ADD CONSTRAINT FK_FormacaoAcad_7
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_2
-    FOREIGN KEY (fk_CV_lattesID)
-    REFERENCES CV (lattesID)
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_3
@@ -108,6 +111,6 @@ ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_3
     ON DELETE CASCADE;
  
 ALTER TABLE PeriodoSanduiche ADD CONSTRAINT FK_PeriodoSanduiche_4
-    FOREIGN KEY (fk_PessoaOrientador_codPessoa)
-    REFERENCES PessoaOrientador (codPessoa)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;

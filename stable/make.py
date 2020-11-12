@@ -1,9 +1,9 @@
 """Glue the output of brModelo into one large SQL file."""
 
-RESET_DB = True
+RESET_DB = False
 
 filenames = ['endereco', 'formacao', 'producao', 'projeto']
-prefix = "stable/log_"
+prefix = "log_"
 
 with open('glued.sql', 'w') as outfile:
     for fname in filenames:

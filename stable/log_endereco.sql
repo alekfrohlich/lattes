@@ -16,11 +16,13 @@ CREATE TABLE Logradouro (
 
 CREATE TABLE Bairro (
     codBairro integer PRIMARY KEY,
-    nomeBairro varchar(20)
+    nomeBairro varchar(20),
+    fk_Cidade_codCidade integer
 );
 
 CREATE TABLE Cidade (
     nomeCidade varchar(20),
+    codCidade integer PRIMARY KEY,
     fk_Estado_codEstado integer
 );
 
@@ -84,7 +86,12 @@ ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_3
     REFERENCES Bairro (codBairro)
     ON DELETE CASCADE;
  
-ALTER TABLE Cidade ADD CONSTRAINT FK_Cidade_1
+ALTER TABLE Bairro ADD CONSTRAINT FK_Bairro_2
+    FOREIGN KEY (fk_Cidade_codCidade)
+    REFERENCES Cidade (codCidade)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Cidade ADD CONSTRAINT FK_Cidade_2
     FOREIGN KEY (fk_Estado_codEstado)
     REFERENCES Estado (codEstado)
     ON DELETE CASCADE;
