@@ -206,6 +206,20 @@ CREATE TABLE Consultor (
     fk_Pessoa_codPessoa integer,
     fk_Assessoria_codAssessoria integer
 );
+
+CREATE TABLE RevisorDePeriodico (
+    fk_CVLattes_LattesID integer,
+    fk_Periodico_codPeriodico integer,
+    anoFim integer,
+    anoInicio integer
+);
+
+CREATE TABLE RevisorDeProjetos (
+    fk_CVLattes_LattesID integer,
+    fk_Instituicao_codInstituicao integer,
+    anoInicio integer,
+    anoFim integer
+);
  
 ALTER TABLE Editora ADD CONSTRAINT FK_Editora_2
     FOREIGN KEY (fk_Cidade_codCidade)
@@ -430,4 +444,24 @@ ALTER TABLE Consultor ADD CONSTRAINT FK_Consultor_1
 ALTER TABLE Consultor ADD CONSTRAINT FK_Consultor_2
     FOREIGN KEY (fk_Assessoria_codAssessoria)
     REFERENCES Assessoria (codAssessoria)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE RevisorDePeriodico ADD CONSTRAINT FK_RevisorDePeriodico_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE RevisorDePeriodico ADD CONSTRAINT FK_RevisorDePeriodico_2
+    FOREIGN KEY (fk_Periodico_codPeriodico)
+    REFERENCES Periodico (codPeriodico)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE RevisorDeProjetos ADD CONSTRAINT FK_RevisorDeProjetos_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE RevisorDeProjetos ADD CONSTRAINT FK_RevisorDeProjetos_2
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE SET NULL;
