@@ -1,8 +1,11 @@
+/* Lógico_2: */
+
 CREATE TABLE CVLattes (
     LattesID integer PRIMARY KEY,
     OrchidID integer,
     telefone integer,
     homepage varchar(40),
+    OutrasInfo varchar(40),
     fk_Departamento_codDepto integer,
     fk_Pessoa_codPessoa integer
 );
@@ -10,6 +13,7 @@ CREATE TABLE CVLattes (
 CREATE TABLE Logradouro (
     codLogradouro integer PRIMARY KEY,
     CEP integer,
+    Nome varchar(40),
     fk_TipoLogradouro_codTipoLogradouro integer,
     fk_Bairro_codBairro integer
 );
@@ -40,7 +44,8 @@ CREATE TABLE Pais (
 CREATE TABLE Instituicao (
     codInstituicao integer PRIMARY KEY,
     nomeInstituicao varchar(20),
-    abreviacao varchar(10)
+    abreviacao varchar(10),
+    fk_Logradouro_codLogradouro integer
 );
 
 CREATE TABLE TipoLogradouro (
@@ -51,7 +56,7 @@ CREATE TABLE TipoLogradouro (
 CREATE TABLE Departamento (
     codDepto integer PRIMARY KEY,
     Nome varchar(20),
-    fk_Campus_codCampus integer
+    fk_Instituicao_codInstituicao integer
 );
 
 CREATE TABLE Pessoa (
@@ -59,11 +64,60 @@ CREATE TABLE Pessoa (
     codPessoa integer PRIMARY KEY
 );
 
-CREATE TABLE Campus (
-    codCampus integer PRIMARY KEY,
-    nomeCampus varchar(20),
-    fk_Instituicao_codInstituicao integer,
-    fk_Logradouro_codLogradouro integer
+CREATE TABLE Lingua (
+    codLingua integer PRIMARY KEY,
+    Nome varchar(20)
+);
+
+CREATE TABLE NivelLingua (
+    codNivelLingua integer PRIMARY KEY,
+    Nome varchar(10)
+);
+
+CREATE TABLE Premio (
+    codPremio integer PRIMARY KEY,
+    Titulo varchar(40),
+    Ano integer,
+    fk_Instituicao_codInstituicao integer
+);
+
+CREATE TABLE NomeEmCitacao (
+    codNome integer PRIMARY KEY,
+    Nome varchar(40)
+);
+
+CREATE TABLE Compreende_CVLattes_Lingua_NivelLingua (
+    fk_CVLattes_LattesID integer,
+    fk_Lingua_codLingua integer,
+    fk_NivelLingua_codNivelLingua integer
+);
+
+CREATE TABLE Fala_CVLattes_Lingua_NivelLingua (
+    fk_CVLattes_LattesID integer,
+    fk_Lingua_codLingua integer,
+    fk_NivelLingua_codNivelLingua integer
+);
+
+CREATE TABLE Escreve_CVLattes_Lingua_NivelLingua (
+    fk_CVLattes_LattesID integer,
+    fk_Lingua_codLingua integer,
+    fk_NivelLingua_codNivelLingua integer
+);
+
+CREATE TABLE Le_CVLattes_Lingua_NivelLingua (
+    fk_CVLattes_LattesID integer,
+    fk_Lingua_codLingua integer,
+    fk_NivelLingua_codNivelLingua integer
+);
+
+CREATE TABLE CVContemplatdo (
+    fk_Premio_codPremio integer,
+    fk_CVLattes_LattesID integer
+);
+
+CREATE TABLE NomesEmCitacao (
+    fk_NomeEmCitacao_codNome integer,
+    fk_Pessoa_codPessoa integer
 );
  
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
@@ -101,17 +155,97 @@ ALTER TABLE Estado ADD CONSTRAINT FK_Estado_2
     REFERENCES Pais (codPais)
     ON DELETE CASCADE;
  
-ALTER TABLE Departamento ADD CONSTRAINT FK_Departamento_2
-    FOREIGN KEY (fk_Campus_codCampus)
-    REFERENCES Campus (codCampus)
+ALTER TABLE Instituicao ADD CONSTRAINT FK_Instituicao_2
+    FOREIGN KEY (fk_Logradouro_codLogradouro)
+    REFERENCES Logradouro (codLogradouro)
     ON DELETE CASCADE;
  
-ALTER TABLE Campus ADD CONSTRAINT FK_Campus_2
+ALTER TABLE Departamento ADD CONSTRAINT FK_Departamento_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
-ALTER TABLE Campus ADD CONSTRAINT FK_Campus_3
-    FOREIGN KEY (fk_Logradouro_codLogradouro)
-    REFERENCES Logradouro (codLogradouro)
+ALTER TABLE Premio ADD CONSTRAINT FK_Premio_2
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
+ 
+ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_2
+    FOREIGN KEY (fk_Lingua_codLingua)
+    REFERENCES Lingua (codLingua)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_3
+    FOREIGN KEY (fk_NivelLingua_codNivelLingua)
+    REFERENCES NivelLingua (codNivelLingua)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_2
+    FOREIGN KEY (fk_Lingua_codLingua)
+    REFERENCES Lingua (codLingua)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_3
+    FOREIGN KEY (fk_NivelLingua_codNivelLingua)
+    REFERENCES NivelLingua (codNivelLingua)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_2
+    FOREIGN KEY (fk_Lingua_codLingua)
+    REFERENCES Lingua (codLingua)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_3
+    FOREIGN KEY (fk_NivelLingua_codNivelLingua)
+    REFERENCES NivelLingua (codNivelLingua)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_1
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_2
+    FOREIGN KEY (fk_Lingua_codLingua)
+    REFERENCES Lingua (codLingua)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_3
+    FOREIGN KEY (fk_NivelLingua_codNivelLingua)
+    REFERENCES NivelLingua (codNivelLingua)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_1
+    FOREIGN KEY (fk_Premio_codPremio)
+    REFERENCES Premio (codPremio)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_1
+    FOREIGN KEY (fk_NomeEmCitacao_codNome)
+    REFERENCES NomeEmCitacao (codNome)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_2
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
+    ON DELETE SET NULL;
