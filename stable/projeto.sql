@@ -6,7 +6,6 @@ CREATE TABLE Situacao (
 );
 
 CREATE TABLE Financiamento_Projeto (
-    Valor real,
     anoInicio integer,
     qtdeDoutorado integer,
     Titulo varchar(20),
@@ -21,7 +20,8 @@ CREATE TABLE Financiamento_Projeto (
     fk_Situacao_codSituacao integer,
     fk_NaturezaProjeto_codNatureza integer,
     fk_Pessoa_codPessoa integer,
-    fk_Instituicao_codInstituicao integer,
+    
+    Valor real,
     fk_NaturezaFinanciamento_codNaturezaFinanciamento integer,
     fk_Moeda_codMoeda integer,
     fk_Edital_numEdital integer,
@@ -63,6 +63,11 @@ CREATE TABLE IntegranteProjeto (
     fk_Pessoa_codPessoa integer,
     fk_Financiamento_Projeto_codProjeto integer
 );
+
+CREATE TABLE Financiador (
+    fk_Instituicao_codInstituicao integer,
+    fk_Financiamento_Projeto_codProjeto integer
+);
  
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_2
     FOREIGN KEY (fk_Situacao_codSituacao)
@@ -79,21 +84,16 @@ ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_4
     ON DELETE CASCADE;
  
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_5
-    FOREIGN KEY (fk_Instituicao_codInstituicao)
-    REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
- 
-ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_6
     FOREIGN KEY (fk_NaturezaFinanciamento_codNaturezaFinanciamento)
     REFERENCES NaturezaFinanciamento (codNaturezaFinanciamento)
     ON DELETE CASCADE;
  
-ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_7
+ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_6
     FOREIGN KEY (fk_Moeda_codMoeda)
     REFERENCES Moeda (codMoeda)
     ON DELETE CASCADE;
  
-ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_8
+ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_7
     FOREIGN KEY (fk_Edital_numEdital)
     REFERENCES Edital (numEdital)
     ON DELETE SET NULL;
@@ -104,6 +104,16 @@ ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_1
     ON DELETE RESTRICT;
  
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_2
+    FOREIGN KEY (fk_Financiamento_Projeto_codProjeto)
+    REFERENCES Financiamento_Projeto (codProjeto)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Financiador ADD CONSTRAINT FK_Financiador_1
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Financiador ADD CONSTRAINT FK_Financiador_2
     FOREIGN KEY (fk_Financiamento_Projeto_codProjeto)
     REFERENCES Financiamento_Projeto (codProjeto)
     ON DELETE SET NULL;

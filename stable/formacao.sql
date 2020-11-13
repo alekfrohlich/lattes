@@ -6,8 +6,8 @@ CREATE TABLE Conceito (
 );
 
 CREATE TABLE Titulacao (
-    nomeTit varchar(10),
-    codTit varchar(40) PRIMARY KEY
+    nomeTitulacao varchar(20),
+    codTitulacao integer PRIMARY KEY
 );
 
 CREATE TABLE FormacaoAcademica (
@@ -15,13 +15,20 @@ CREATE TABLE FormacaoAcademica (
     codFormacao integer PRIMARY KEY,
     anoFim integer,
     TituloTrabalhoDeConclusao varchar(40),
+
     fk_Conceito_codConceito integer,
+    
     fk_Instituicao_codInstituicao integer,
-    fk_CVLattes_LattesID integer,
-    fk_Titulacao_codTit varchar(40),
-    fk_Pessoa_codPessoa integer,
     fk_Instituicao_codInstituicao_ integer,
+    
+    fk_CVLattes_LattesID integer,
+    
+    fk_Titulacao_codTitulacao integer,
+    
+    fk_Pessoa_codPessoa integer,
+    
     fk_Curso_codCurso integer,
+    
     fk_Especialidade_codEspecialidade integer
 );
 
@@ -62,11 +69,13 @@ CREATE TABLE AtuacaoProfissional (
     anoInicio integer,
     anoFim integer,
     cargaHoraria integer,
+    outrasInfo varchar(100),
     AtuacaoProfissional_TIPO INT,
     fk_CVLattes_LattesID integer,
     fk_Instituicao_codInstituicao integer,
     fk_Enquadramento_codEnquadramento integer,
     fk_Vinculo_codVinculo integer,
+    fk_Regime_codRegime integer,
     fk_Cargo_codCargo integer,
     fk_Cargo_codCargo_ integer
 );
@@ -94,7 +103,8 @@ CREATE TABLE NivelDisciplina (
 CREATE TABLE Disciplina (
     codDisciplina integer PRIMARY KEY,
     Nome varchar(100),
-    fk_NivelDisciplina_codNivelDisciplina integer
+    fk_NivelDisciplina_codNivelDisciplina integer,
+    fk_Curso_codCurso integer
 );
 
 CREATE TABLE ServicoRealizado (
@@ -104,8 +114,7 @@ CREATE TABLE ServicoRealizado (
 
 CREATE TABLE LinhaDePesquisa (
     codLinha integer PRIMARY KEY,
-    Nome varchar(100),
-    fk_AtuacaoProfissional_codAtuacao integer
+    Nome varchar(100)
 );
 
 CREATE TABLE Cargo (
@@ -152,11 +161,6 @@ CREATE TABLE PalavrasChaveDaFormacao (
     fk_FormacaoAcademica_codFormacao integer
 );
 
-CREATE TABLE RegimeDaAtuacao (
-    fk_AtuacaoProfissional_codAtuacao integer,
-    fk_Regime_codRegime integer
-);
-
 CREATE TABLE DisciplinasMinistradas (
     fk_Disciplina_codDisciplina integer,
     fk_AtuacaoProfissional_codAtuacao integer
@@ -166,11 +170,16 @@ CREATE TABLE ServicosRealizados (
     fk_ServicoRealizado_codServicoRealizado integer,
     fk_AtuacaoProfissional_codAtuacao integer
 );
+
+CREATE TABLE LinhasDePesquisa (
+    fk_LinhaDePesquisa_codLinha integer,
+    fk_AtuacaoProfissional_codAtuacao integer
+);
  
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_2
     FOREIGN KEY (fk_Conceito_codConceito)
     REFERENCES Conceito (codConceito)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_3
     FOREIGN KEY (fk_Instituicao_codInstituicao, fk_Instituicao_codInstituicao_)
@@ -183,8 +192,8 @@ ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_4
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_5
-    FOREIGN KEY (fk_Titulacao_codTit)
-    REFERENCES Titulacao (codTit)
+    FOREIGN KEY (fk_Titulacao_codTitulacao)
+    REFERENCES Titulacao (codTitulacao)
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_6
@@ -233,6 +242,11 @@ ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_5
     ON DELETE CASCADE;
  
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_6
+    FOREIGN KEY (fk_Regime_codRegime)
+    REFERENCES Regime (codRegime)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_7
     FOREIGN KEY (fk_Cargo_codCargo, fk_Cargo_codCargo_)
     REFERENCES Cargo (codCargo, codCargo)
     ON DELETE CASCADE;
@@ -242,9 +256,9 @@ ALTER TABLE Disciplina ADD CONSTRAINT FK_Disciplina_2
     REFERENCES NivelDisciplina (codNivelDisciplina)
     ON DELETE CASCADE;
  
-ALTER TABLE LinhaDePesquisa ADD CONSTRAINT FK_LinhaDePesquisa_2
-    FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
-    REFERENCES AtuacaoProfissional (codAtuacao)
+ALTER TABLE Disciplina ADD CONSTRAINT FK_Disciplina_3
+    FOREIGN KEY (fk_Curso_codCurso)
+    REFERENCES Curso (codCurso)
     ON DELETE CASCADE;
  
 ALTER TABLE Especialidade ADD CONSTRAINT FK_Especialidade_2
@@ -265,7 +279,7 @@ ALTER TABLE Area ADD CONSTRAINT FK_Area_2
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE RESTRICT;
+    ON DELETE NO ACTION;
  
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -275,7 +289,7 @@ ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_3
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
  
 ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
@@ -297,16 +311,6 @@ ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_2
     REFERENCES FormacaoAcademica (codFormacao)
     ON DELETE SET NULL;
  
-ALTER TABLE RegimeDaAtuacao ADD CONSTRAINT FK_RegimeDaAtuacao_1
-    FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
-    REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE SET NULL;
- 
-ALTER TABLE RegimeDaAtuacao ADD CONSTRAINT FK_RegimeDaAtuacao_2
-    FOREIGN KEY (fk_Regime_codRegime)
-    REFERENCES Regime (codRegime)
-    ON DELETE SET NULL;
- 
 ALTER TABLE DisciplinasMinistradas ADD CONSTRAINT FK_DisciplinasMinistradas_1
     FOREIGN KEY (fk_Disciplina_codDisciplina)
     REFERENCES Disciplina (codDisciplina)
@@ -323,6 +327,16 @@ ALTER TABLE ServicosRealizados ADD CONSTRAINT FK_ServicosRealizados_1
     ON DELETE RESTRICT;
  
 ALTER TABLE ServicosRealizados ADD CONSTRAINT FK_ServicosRealizados_2
+    FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
+    REFERENCES AtuacaoProfissional (codAtuacao)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE LinhasDePesquisa ADD CONSTRAINT FK_LinhasDePesquisa_1
+    FOREIGN KEY (fk_LinhaDePesquisa_codLinha)
+    REFERENCES LinhaDePesquisa (codLinha)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE LinhasDePesquisa ADD CONSTRAINT FK_LinhasDePesquisa_2
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
     ON DELETE SET NULL;
