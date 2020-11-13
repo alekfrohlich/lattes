@@ -10,9 +10,9 @@ CREATE TABLE Titulacao (
     codTit varchar(40) PRIMARY KEY
 );
 
-CREATE TABLE FormacaoAcademica_Pessoa_Instituicao (
+CREATE TABLE FormacaoAcademica (
     anoInicio integer,
-    codFormacao integer,
+    codFormacao integer PRIMARY KEY,
     anoFim integer,
     TituloTrabalhoDeConclusao varchar(40),
     fk_Conceito_codConceito integer,
@@ -21,10 +21,7 @@ CREATE TABLE FormacaoAcademica_Pessoa_Instituicao (
     fk_Titulacao_codTit varchar(40),
     fk_Pessoa_codPessoa integer,
     fk_Instituicao_codInstituicao_ integer,
-    codPessoa integer,
-    codInstituicao integer,
-    fk_Curso_codCurso integer,
-    PRIMARY KEY (codFormacao, codPessoa, codInstituicao)
+    fk_Curso_codCurso integer
 );
 
 CREATE TABLE FormacaoComplementar (
@@ -34,9 +31,15 @@ CREATE TABLE FormacaoComplementar (
     anoIn integer,
     codFormComp integer PRIMARY KEY,
     fk_CVLattes_LattesID integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao integer
+    fk_Instituicao_codInstituicao integer
+);
+
+CREATE TABLE Instituicao (
+    codInstituicao integer PRIMARY KEY
+);
+
+CREATE TABLE Pessoa (
+    codPessoa integer PRIMARY KEY
 );
 
 CREATE TABLE CVLattes (
@@ -60,9 +63,7 @@ CREATE TABLE AtuacaoProfissional (
     cargaHoraria integer,
     AtuacaoProfissional_TIPO INT,
     fk_CVLattes_LattesID integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao integer,
+    fk_Instituicao_codInstituicao integer,
     fk_Enquadramento_codEnquadramento integer,
     fk_Vinculo_codVinculo integer,
     fk_Cargo_codCargo integer,
@@ -111,18 +112,20 @@ CREATE TABLE Cargo (
     codCargo integer PRIMARY KEY
 );
 
+CREATE TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao (
+    fk_FormacaoAcademica_codFormacao integer,
+    fk_Pessoa_codPessoa integer,
+    fk_Instituicao_codInstituicao integer
+);
+
 CREATE TABLE CursosDaInstituicao (
-    fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao integer,
+    fk_Instituicao_codInstituicao integer,
     fk_Curso_codCurso integer
 );
 
 CREATE TABLE PalavrasChaveDaFormacao (
     fk_PalavraChave_codPalavraChave integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa integer,
-    fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao integer
+    fk_FormacaoAcademica_codFormacao integer
 );
 
 CREATE TABLE RegimeDaAtuacao (
@@ -140,26 +143,32 @@ CREATE TABLE ServicosRealizados (
     fk_AtuacaoProfissional_codAtuacao integer
 );
  
-ALTER TABLE FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_FormacaoAcademica_Pessoa_Instituicao_2
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_2
     FOREIGN KEY (fk_Conceito_codConceito)
     REFERENCES Conceito (codConceito)
     ON DELETE SET NULL;
  
-ALTER TABLE FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_FormacaoAcademica_Pessoa_Instituicao_3
-    FOREIGN KEY (fk_Instituicao_codInstituicao, fk_Pessoa_codPessoa, fk_Instituicao_codInstituicao_)
-    REFERENCES ??? (???);
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_3
+    FOREIGN KEY (fk_Instituicao_codInstituicao, fk_Instituicao_codInstituicao_)
+    REFERENCES Instituicao (codInstituicao, codInstituicao)
+    ON DELETE SET NULL;
  
-ALTER TABLE FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_FormacaoAcademica_Pessoa_Instituicao_4
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_4
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
-ALTER TABLE FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_FormacaoAcademica_Pessoa_Instituicao_5
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_5
     FOREIGN KEY (fk_Titulacao_codTit)
     REFERENCES Titulacao (codTit)
     ON DELETE CASCADE;
  
-ALTER TABLE FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_FormacaoAcademica_Pessoa_Instituicao_6
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_6
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_7
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
     ON DELETE CASCADE;
@@ -170,8 +179,8 @@ ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_2
     ON DELETE CASCADE;
  
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_3
-    FOREIGN KEY (fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao, fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa, fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao)
-    REFERENCES FormacaoAcademica_Pessoa_Instituicao (codFormacao, codPessoa, codInstituicao)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_2
@@ -180,8 +189,8 @@ ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_2
     ON DELETE CASCADE;
  
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_3
-    FOREIGN KEY (fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao, fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa, fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao)
-    REFERENCES FormacaoAcademica_Pessoa_Instituicao (codFormacao, codPessoa, codInstituicao)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
  
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_4
@@ -209,9 +218,24 @@ ALTER TABLE LinhaDePesquisa ADD CONSTRAINT FK_LinhaDePesquisa_2
     REFERENCES AtuacaoProfissional (codAtuacao)
     ON DELETE CASCADE;
  
+ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_1
+    FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
+    REFERENCES FormacaoAcademica (codFormacao)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_2
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_3
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
+    ON DELETE NO ACTION;
+ 
 ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_1
-    FOREIGN KEY (fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao, fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa, fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao)
-    REFERENCES FormacaoAcademica_Pessoa_Instituicao (codFormacao, codPessoa, codInstituicao)
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
     ON DELETE SET NULL;
  
 ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_2
@@ -225,8 +249,8 @@ ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_1
     ON DELETE RESTRICT;
  
 ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_2
-    FOREIGN KEY (fk_FormacaoAcademica_Pessoa_Instituicao_codFormacao, fk_FormacaoAcademica_Pessoa_Instituicao_codPessoa, fk_FormacaoAcademica_Pessoa_Instituicao_codInstituicao)
-    REFERENCES FormacaoAcademica_Pessoa_Instituicao (codFormacao, codPessoa, codInstituicao)
+    FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
+    REFERENCES FormacaoAcademica (codFormacao)
     ON DELETE SET NULL;
  
 ALTER TABLE RegimeDaAtuacao ADD CONSTRAINT FK_RegimeDaAtuacao_1
