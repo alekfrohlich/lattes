@@ -3,7 +3,7 @@
 RESET_DB = False
 
 filenames = ['endereco', 'formacao', 'producao', 'projeto']
-prefix = "log_"
+prefix = ""
 
 with open('glued.sql', 'w') as outfile:
     for fname in filenames:
