@@ -21,7 +21,8 @@ CREATE TABLE FormacaoAcademica (
     fk_Titulacao_codTit varchar(40),
     fk_Pessoa_codPessoa integer,
     fk_Instituicao_codInstituicao_ integer,
-    fk_Curso_codCurso integer
+    fk_Curso_codCurso integer,
+    fk_Especialidade_codEspecialidade integer
 );
 
 CREATE TABLE FormacaoComplementar (
@@ -112,6 +113,29 @@ CREATE TABLE Cargo (
     codCargo integer PRIMARY KEY
 );
 
+CREATE TABLE Especialidade (
+    codEspecialidade integer PRIMARY KEY,
+    Nome varchar(20),
+    fk_SubArea_codSubArea integer
+);
+
+CREATE TABLE SubArea (
+    codSubArea integer PRIMARY KEY,
+    Nome varchar(40),
+    fk_Area_codArea integer
+);
+
+CREATE TABLE Area (
+    codArea integer PRIMARY KEY,
+    Nome varchar(40),
+    fk_GrandeArea_codGrandeArea integer
+);
+
+CREATE TABLE GrandeArea (
+    codGrandeArea integer PRIMARY KEY,
+    Nome varchar(40)
+);
+
 CREATE TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao (
     fk_FormacaoAcademica_codFormacao integer,
     fk_Pessoa_codPessoa integer,
@@ -173,6 +197,11 @@ ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_7
     REFERENCES Curso (codCurso)
     ON DELETE CASCADE;
  
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_8
+    FOREIGN KEY (fk_Especialidade_codEspecialidade)
+    REFERENCES Especialidade (codEspecialidade)
+    ON DELETE CASCADE;
+ 
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
@@ -216,6 +245,21 @@ ALTER TABLE Disciplina ADD CONSTRAINT FK_Disciplina_2
 ALTER TABLE LinhaDePesquisa ADD CONSTRAINT FK_LinhaDePesquisa_2
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Especialidade ADD CONSTRAINT FK_Especialidade_2
+    FOREIGN KEY (fk_SubArea_codSubArea)
+    REFERENCES SubArea (codSubArea)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE SubArea ADD CONSTRAINT FK_SubArea_2
+    FOREIGN KEY (fk_Area_codArea)
+    REFERENCES Area (codArea)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Area ADD CONSTRAINT FK_Area_2
+    FOREIGN KEY (fk_GrandeArea_codGrandeArea)
+    REFERENCES GrandeArea (codGrandeArea)
     ON DELETE CASCADE;
  
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_1
