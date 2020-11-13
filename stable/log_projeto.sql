@@ -1,3 +1,5 @@
+/* Lógico_1: */
+
 CREATE TABLE Situacao (
     codSituacao integer PRIMARY KEY,
     nomeSituacao varchar(10)
@@ -94,7 +96,7 @@ ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_7
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_8
     FOREIGN KEY (fk_Edital_numEdital)
     REFERENCES Edital (numEdital)
-    ON DELETE CASCADE;
+    ON DELETE SET NULL;
  
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
