@@ -1,8 +1,8 @@
-/* Lógico_2: */
+/* Manually changed */
 
 CREATE TABLE CVLattes (
-    LattesID integer PRIMARY KEY,
-    OrchidID integer,
+    LattesID varchar(30) PRIMARY KEY,
+    OrchidID varchar(30),
     telefone integer,
     homepage varchar(40),
     OutrasInfo varchar(40),
@@ -55,28 +55,28 @@ CREATE TABLE TipoLogradouro (
 
 CREATE TABLE Departamento (
     codDepto integer PRIMARY KEY,
-    Nome varchar(20),
+    Nome varchar(40),
     fk_Instituicao_codInstituicao integer
 );
 
 CREATE TABLE Pessoa (
-    Nome varchar(20),
+    Nome varchar(40),
     codPessoa integer PRIMARY KEY
 );
 
 CREATE TABLE Lingua (
     codLingua integer PRIMARY KEY,
-    Nome varchar(20)
+    Nome varchar(40)
 );
 
 CREATE TABLE NivelLingua (
     codNivelLingua integer PRIMARY KEY,
-    Nome varchar(10)
+    Nome varchar(20)
 );
 
 CREATE TABLE Premio (
     codPremio integer PRIMARY KEY,
-    Titulo varchar(40),
+    Titulo varchar(100),
     Ano integer,
     fk_Instituicao_codInstituicao integer
 );
@@ -119,132 +119,132 @@ CREATE TABLE NomesEmCitacao (
     fk_NomeEmCitacao_codNome integer,
     fk_Pessoa_codPessoa integer
 );
- 
+
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
     FOREIGN KEY (fk_Departamento_codDepto)
     REFERENCES Departamento (codDepto)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_3
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_2
     FOREIGN KEY (fk_TipoLogradouro_codTipoLogradouro)
     REFERENCES TipoLogradouro (codTipoLogradouro)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_3
     FOREIGN KEY (fk_Bairro_codBairro)
     REFERENCES Bairro (codBairro)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Bairro ADD CONSTRAINT FK_Bairro_2
     FOREIGN KEY (fk_Cidade_codCidade)
     REFERENCES Cidade (codCidade)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Cidade ADD CONSTRAINT FK_Cidade_2
     FOREIGN KEY (fk_Estado_codEstado)
     REFERENCES Estado (codEstado)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Estado ADD CONSTRAINT FK_Estado_2
     FOREIGN KEY (fk_Pais_codPais)
     REFERENCES Pais (codPais)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Instituicao ADD CONSTRAINT FK_Instituicao_2
     FOREIGN KEY (fk_Logradouro_codLogradouro)
     REFERENCES Logradouro (codLogradouro)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Departamento ADD CONSTRAINT FK_Departamento_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Premio ADD CONSTRAINT FK_Premio_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
- 
+
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
     REFERENCES NivelLingua (codNivelLingua)
     ON DELETE RESTRICT;
- 
+
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
     REFERENCES NivelLingua (codNivelLingua)
     ON DELETE RESTRICT;
- 
+
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
     REFERENCES NivelLingua (codNivelLingua)
     ON DELETE RESTRICT;
- 
+
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
     ON DELETE NO ACTION;
- 
+
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
     REFERENCES NivelLingua (codNivelLingua)
     ON DELETE RESTRICT;
- 
+
 ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_1
     FOREIGN KEY (fk_Premio_codPremio)
     REFERENCES Premio (codPremio)
     ON DELETE SET NULL;
- 
+
 ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE SET NULL;
- 
+
 ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_1
     FOREIGN KEY (fk_NomeEmCitacao_codNome)
     REFERENCES NomeEmCitacao (codNome)
     ON DELETE RESTRICT;
- 
+
 ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
