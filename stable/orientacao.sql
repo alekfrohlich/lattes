@@ -1,4 +1,4 @@
-/* Lógico_1: */
+/* Lógico_2: */
 
 CREATE TABLE Banca (
     codBanca integer PRIMARY KEY,
@@ -24,11 +24,11 @@ CREATE TABLE Orientacao (
     Titulo varchar(100),
     Ano integer,
     fk_Pessoa_codPessoa integer,
-    fk_Pessoa_codPessoa_ integer,
-    fk_Pessoa_codPessoa__ integer,
     fk_TipoOrientacao_codTipoOrientacao integer,
     fk_Instituicao_codInstituicao integer,
-    fk_Instituicao_codInstituicao_ integer
+    fk_Instituicao_codInstituicao_ integer,
+    fk_CVLattes_LattesID integer,
+    fk_Curso_codCurso integer
 );
 
 CREATE TABLE TipoOrientacao (
@@ -44,12 +44,16 @@ CREATE TABLE Instituicao (
     codInstituicao integer PRIMARY KEY
 );
 
+CREATE TABLE CVLattes (
+    LattesID integer PRIMARY KEY
+);
+
 CREATE TABLE MembroDaBanca (
     fk_Pessoa_codPessoa integer,
     fk_Banca_codBanca integer
 );
 
-CREATE TABLE CursoDaInstituicao (
+CREATE TABLE CursosDaInstituicao (
     fk_Instituicao_codInstituicao integer,
     fk_Curso_codCurso integer
 );
@@ -72,11 +76,11 @@ ALTER TABLE Banca ADD CONSTRAINT FK_Banca_4
 ALTER TABLE Banca ADD CONSTRAINT FK_Banca_5
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE CASCADE;
+    ON DELETE SET NULL;
  
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_2
-    FOREIGN KEY (fk_Pessoa_codPessoa, fk_Pessoa_codPessoa_, fk_Pessoa_codPessoa__)
-    REFERENCES Pessoa (codPessoa, codPessoa, codPessoa)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_3
@@ -89,6 +93,16 @@ ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_4
     REFERENCES Instituicao (codInstituicao, codInstituicao)
     ON DELETE CASCADE;
  
+ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_5
+    FOREIGN KEY (fk_CVLattes_LattesID)
+    REFERENCES CVLattes (LattesID)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_6
+    FOREIGN KEY (fk_Curso_codCurso)
+    REFERENCES Curso (codCurso)
+    ON DELETE CASCADE;
+ 
 ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
@@ -99,12 +113,12 @@ ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_2
     REFERENCES Banca (codBanca)
     ON DELETE SET NULL;
  
-ALTER TABLE CursoDaInstituicao ADD CONSTRAINT FK_CursoDaInstituicao_1
+ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
     ON DELETE SET NULL;
  
-ALTER TABLE CursoDaInstituicao ADD CONSTRAINT FK_CursoDaInstituicao_2
+ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_2
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
     ON DELETE SET NULL;

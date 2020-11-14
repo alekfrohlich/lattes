@@ -58,6 +58,7 @@ CREATE TABLE TipoProducao (
 CREATE TABLE Evento (
     codEvento integer PRIMARY KEY,
     nomeEvento varchar(40),
+    ano integer,
     fk_TipoEvento_codTipoEvento integer,
     fk_Cidade_codCidade integer
 );
@@ -74,7 +75,8 @@ CREATE TABLE CVLattes (
 CREATE TABLE CapituloDeLivro (
     codCap integer PRIMARY KEY,
     Titulo varchar(40),
-    intervaloPags interval
+    intervaloPags interval,
+    fk_Livro_codLivro integer
 );
 
 CREATE TABLE Cidade (
@@ -111,7 +113,7 @@ CREATE TABLE Qualis (
 
 CREATE TABLE ProgramaDePC (
     codProgramaPC integer PRIMARY KEY,
-    Titulo varchar(100),
+    NomePrograma varchar(100),
     Ano integer
 );
 
@@ -157,19 +159,14 @@ CREATE TABLE OrganizacaoDeEventoPeloCV (
     fk_Evento_codEvento integer
 );
 
-CREATE TABLE LivroDoCapitulo (
-    fk_Livro_codLivro integer,
-    fk_CapituloDeLivro_codCap integer
-);
-
 CREATE TABLE AutorCapitulo (
-    fk_Pessoa_codPessoa integer,
-    fk_CapituloDeLivro_codCap integer
+    fk_CapituloDeLivro_codCap integer,
+    fk_Pessoa_codPessoa integer
 );
 
 CREATE TABLE AutorPublicacaoEmCongresso (
-    fk_Pessoa_codPessoa integer,
-    fk_PublicacaoEmCongresso_codArtigoEmCongresso integer
+    fk_PublicacaoEmCongresso_codArtigoEmCongresso integer,
+    fk_Pessoa_codPessoa integer
 );
 
 CREATE TABLE AutorApresentacao (
@@ -185,16 +182,6 @@ CREATE TABLE AutorOutraProd (
 CREATE TABLE Participante (
     fk_Pessoa_codPessoa integer,
     fk_ProducaoTecnica_codEntrevista integer
-);
-
-CREATE TABLE ParticipacaoEmEventoDoCV (
-    fk_CVLattes_LattesID integer,
-    fk_Evento_codEvento integer
-);
-
-CREATE TABLE OrganizacaoDeEventoDoCV (
-    fk_Evento_codEvento integer,
-    fk_CVLattes_LattesID integer
 );
 
 CREATE TABLE AutorProgramaPC (
@@ -261,6 +248,11 @@ ALTER TABLE Evento ADD CONSTRAINT FK_Evento_3
     REFERENCES Cidade (codCidade)
     ON DELETE CASCADE;
  
+ALTER TABLE CapituloDeLivro ADD CONSTRAINT FK_CapituloDeLivro_2
+    FOREIGN KEY (fk_Livro_codLivro)
+    REFERENCES Livro (codLivro)
+    ON DELETE CASCADE;
+ 
 ALTER TABLE ApresentacaoDeTrabalho ADD CONSTRAINT FK_ApresentacaoDeTrabalho_2
     FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
     REFERENCES TipoProducao (codTipoProducaoCientifica)
@@ -299,7 +291,7 @@ ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_2
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE RESTRICT;
+    ON DELETE SET NULL;
  
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_2
     FOREIGN KEY (fk_Livro_codLivro)
@@ -346,34 +338,24 @@ ALTER TABLE OrganizacaoDeEventoPeloCV ADD CONSTRAINT FK_OrganizacaoDeEventoPeloC
     REFERENCES Evento (codEvento)
     ON DELETE SET NULL;
  
-ALTER TABLE LivroDoCapitulo ADD CONSTRAINT FK_LivroDoCapitulo_1
-    FOREIGN KEY (fk_Livro_codLivro)
-    REFERENCES Livro (codLivro)
-    ON DELETE SET NULL;
- 
-ALTER TABLE LivroDoCapitulo ADD CONSTRAINT FK_LivroDoCapitulo_2
+ALTER TABLE AutorCapitulo ADD CONSTRAINT FK_AutorCapitulo_1
     FOREIGN KEY (fk_CapituloDeLivro_codCap)
     REFERENCES CapituloDeLivro (codCap)
     ON DELETE SET NULL;
- 
-ALTER TABLE AutorCapitulo ADD CONSTRAINT FK_AutorCapitulo_1
-    FOREIGN KEY (fk_Pessoa_codPessoa)
-    REFERENCES Pessoa (codPessoa)
-    ON DELETE RESTRICT;
  
 ALTER TABLE AutorCapitulo ADD CONSTRAINT FK_AutorCapitulo_2
-    FOREIGN KEY (fk_CapituloDeLivro_codCap)
-    REFERENCES CapituloDeLivro (codCap)
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE SET NULL;
  
 ALTER TABLE AutorPublicacaoEmCongresso ADD CONSTRAINT FK_AutorPublicacaoEmCongresso_1
-    FOREIGN KEY (fk_Pessoa_codPessoa)
-    REFERENCES Pessoa (codPessoa)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE AutorPublicacaoEmCongresso ADD CONSTRAINT FK_AutorPublicacaoEmCongresso_2
     FOREIGN KEY (fk_PublicacaoEmCongresso_codArtigoEmCongresso)
     REFERENCES PublicacaoEmCongresso (codArtigoEmCongresso)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE AutorPublicacaoEmCongresso ADD CONSTRAINT FK_AutorPublicacaoEmCongresso_2
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
     ON DELETE SET NULL;
  
 ALTER TABLE AutorApresentacao ADD CONSTRAINT FK_AutorApresentacao_1
@@ -404,26 +386,6 @@ ALTER TABLE Participante ADD CONSTRAINT FK_Participante_1
 ALTER TABLE Participante ADD CONSTRAINT FK_Participante_2
     FOREIGN KEY (fk_ProducaoTecnica_codEntrevista)
     REFERENCES ProducaoTecnica (codEntrevista)
-    ON DELETE SET NULL;
- 
-ALTER TABLE ParticipacaoEmEventoDoCV ADD CONSTRAINT FK_ParticipacaoEmEventoDoCV_1
-    FOREIGN KEY (fk_CVLattes_LattesID)
-    REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
- 
-ALTER TABLE ParticipacaoEmEventoDoCV ADD CONSTRAINT FK_ParticipacaoEmEventoDoCV_2
-    FOREIGN KEY (fk_Evento_codEvento)
-    REFERENCES Evento (codEvento)
-    ON DELETE SET NULL;
- 
-ALTER TABLE OrganizacaoDeEventoDoCV ADD CONSTRAINT FK_OrganizacaoDeEventoDoCV_1
-    FOREIGN KEY (fk_Evento_codEvento)
-    REFERENCES Evento (codEvento)
-    ON DELETE SET NULL;
- 
-ALTER TABLE OrganizacaoDeEventoDoCV ADD CONSTRAINT FK_OrganizacaoDeEventoDoCV_2
-    FOREIGN KEY (fk_CVLattes_LattesID)
-    REFERENCES CVLattes (LattesID)
     ON DELETE SET NULL;
  
 ALTER TABLE AutorProgramaPC ADD CONSTRAINT FK_AutorProgramaPC_1
