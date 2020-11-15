@@ -15,20 +15,13 @@ CREATE TABLE FormacaoAcademica (
     codFormacao integer PRIMARY KEY,
     anoFim integer,
     TituloTrabalhoDeConclusao varchar(40),
-
     fk_Conceito_codConceito integer,
-    
     fk_Instituicao_codInstituicao integer,
-    fk_Instituicao_codInstituicao_ integer,
-    
     fk_CVLattes_LattesID integer,
-    
     fk_Titulacao_codTitulacao integer,
-    
     fk_Pessoa_codPessoa integer,
-    
+    fk_Instituicao_codInstituicao_ integer,
     fk_Curso_codCurso integer,
-    
     fk_Especialidade_codEspecialidade integer
 );
 

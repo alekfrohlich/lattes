@@ -1,4 +1,4 @@
-/* Lógico_2: */
+/* Lógico_1: */
 
 CREATE TABLE Banca (
     codBanca integer PRIMARY KEY,

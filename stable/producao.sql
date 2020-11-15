@@ -100,7 +100,7 @@ CREATE TABLE OutraProducaoBibliografica (
 );
 
 CREATE TABLE ProducaoTecnica (
-    codEntrevista integer PRIMARY KEY,
+    codProdTecnica integer PRIMARY KEY,
     Titulo varchar(100),
     ano integer,
     fk_TipoProducao_codTipoProducaoCientifica integer
@@ -181,7 +181,7 @@ CREATE TABLE AutorOutraProd (
 
 CREATE TABLE Participante (
     fk_Pessoa_codPessoa integer,
-    fk_ProducaoTecnica_codEntrevista integer
+    fk_ProducaoTecnica_codProdTecnica integer
 );
 
 CREATE TABLE AutorProgramaPC (
@@ -384,8 +384,8 @@ ALTER TABLE Participante ADD CONSTRAINT FK_Participante_1
     ON DELETE RESTRICT;
  
 ALTER TABLE Participante ADD CONSTRAINT FK_Participante_2
-    FOREIGN KEY (fk_ProducaoTecnica_codEntrevista)
-    REFERENCES ProducaoTecnica (codEntrevista)
+    FOREIGN KEY (fk_ProducaoTecnica_codProdTecnica)
+    REFERENCES ProducaoTecnica (codProdTecnica)
     ON DELETE SET NULL;
  
 ALTER TABLE AutorProgramaPC ADD CONSTRAINT FK_AutorProgramaPC_1

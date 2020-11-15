@@ -6,6 +6,7 @@ CREATE TABLE Situacao (
 );
 
 CREATE TABLE Financiamento_Projeto (
+    Valor real,
     anoInicio integer,
     qtdeDoutorado integer,
     Titulo varchar(20),
@@ -20,8 +21,6 @@ CREATE TABLE Financiamento_Projeto (
     fk_Situacao_codSituacao integer,
     fk_NaturezaProjeto_codNatureza integer,
     fk_Pessoa_codPessoa integer,
-    
-    Valor real,
     fk_NaturezaFinanciamento_codNaturezaFinanciamento integer,
     fk_Moeda_codMoeda integer,
     fk_Edital_numEdital integer,
