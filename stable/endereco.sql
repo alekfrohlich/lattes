@@ -6,8 +6,11 @@ CREATE TABLE CVLattes (
     telefone integer,
     homepage varchar(40),
     OutrasInfo varchar(40),
+    sala integer,
+    descricao text,
     fk_Departamento_codDepto integer,
-    fk_Pessoa_codPessoa integer
+    fk_Pessoa_codPessoa integer,
+    fk_Bolsa_codBolsa integer
 );
 
 CREATE TABLE Logradouro (
@@ -86,6 +89,11 @@ CREATE TABLE NomeEmCitacao (
     Nome varchar(40)
 );
 
+CREATE TABLE Bolsa (
+    codBolsa integer PRIMARY KEY,
+    nome varchar(100)
+);
+
 CREATE TABLE Compreende_CVLattes_Lingua_NivelLingua (
     fk_CVLattes_LattesID varchar(40),
     fk_Lingua_codLingua integer,
@@ -128,6 +136,11 @@ ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_3
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_4
+    FOREIGN KEY (fk_Bolsa_codBolsa)
+    REFERENCES Bolsa (codBolsa)
     ON DELETE CASCADE;
  
 ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_2
