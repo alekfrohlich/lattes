@@ -85,7 +85,7 @@ CREATE TABLE Premio (
 );
 
 CREATE TABLE NomeEmCitacao (
-    codNome integer PRIMARY KEY,
+    numNome integer PRIMARY KEY,
     Nome varchar(40)
 );
 
@@ -124,7 +124,7 @@ CREATE TABLE CVContemplatdo (
 );
 
 CREATE TABLE NomesEmCitacao (
-    fk_NomeEmCitacao_codNome integer,
+    fk_NomeEmCitacao_numNome integer,
     fk_Pessoa_codPessoa integer
 );
  
@@ -254,8 +254,8 @@ ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
     ON DELETE SET NULL;
  
 ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_1
-    FOREIGN KEY (fk_NomeEmCitacao_codNome)
-    REFERENCES NomeEmCitacao (codNome)
+    FOREIGN KEY (fk_NomeEmCitacao_numNome)
+    REFERENCES NomeEmCitacao (numNome)
     ON DELETE RESTRICT;
  
 ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_2
