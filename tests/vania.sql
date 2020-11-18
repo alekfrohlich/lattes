@@ -1,8 +1,8 @@
 -- Test Endereco
 
 INSERT INTO Pessoa (codPessoa, Nome) VALUES (1, 'Vania Bogorny');
-INSERT INTO NomeEmCitacao (codNome, Nome) VALUES (1, 'BOGORNY, V.'), (2, 'Bogorny, Vania');
-INSERT INTO NomesEmCitacao VALUES (1, 1), (2, 1);
+INSERT INTO NomeEmCitacao (fk_Pessoa_codPessoa, numNome, Nome) VALUES (1, 1, 'BOGORNY, V.'), (1, 2, 'Bogorny, Vania');
+-- INSERT INTO NomesEmCitacao VALUES (1, 1), (2, 1);
 
 INSERT INTO Pais (codPais, nomePais) VALUES (1, 'Brasil');
 INSERT INTO Estado (codEstado, nomeEstado, fk_Pais_codPais) VALUES (1, 'SC', 1);

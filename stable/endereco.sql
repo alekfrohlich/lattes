@@ -86,7 +86,8 @@ CREATE TABLE Premio (
 
 CREATE TABLE NomeEmCitacao (
     numNome integer PRIMARY KEY,
-    Nome varchar(40)
+    Nome varchar(40),
+    fk_Pessoa_codPessoa integer
 );
 
 CREATE TABLE Bolsa (
@@ -121,11 +122,6 @@ CREATE TABLE Le_CVLattes_Lingua_NivelLingua (
 CREATE TABLE CVContemplatdo (
     fk_Premio_codPremio integer,
     fk_CVLattes_LattesID varchar(40)
-);
-
-CREATE TABLE NomesEmCitacao (
-    fk_NomeEmCitacao_numNome integer,
-    fk_Pessoa_codPessoa integer
 );
  
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
@@ -182,6 +178,11 @@ ALTER TABLE Premio ADD CONSTRAINT FK_Premio_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
     ON DELETE CASCADE;
+ 
+ALTER TABLE NomeEmCitacao ADD CONSTRAINT FK_NomeEmCitacao_2
+    FOREIGN KEY (fk_Pessoa_codPessoa)
+    REFERENCES Pessoa (codPessoa)
+    ON DELETE RESTRICT;
  
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
@@ -251,14 +252,4 @@ ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_1
 ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
- 
-ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_1
-    FOREIGN KEY (fk_NomeEmCitacao_numNome)
-    REFERENCES NomeEmCitacao (numNome)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE NomesEmCitacao ADD CONSTRAINT FK_NomesEmCitacao_2
-    FOREIGN KEY (fk_Pessoa_codPessoa)
-    REFERENCES Pessoa (codPessoa)
     ON DELETE SET NULL;
