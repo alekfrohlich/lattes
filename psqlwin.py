@@ -20,7 +20,7 @@ RUN_PSQL = True
 
 subprocess.run(['dropdb'] + PSQL_FLAGS + ['lattes'])
 subprocess.run(['createdb'] + PSQL_FLAGS + ['lattes'])
-subprocess.run(['psql'] + PSQL_FLAGS + ['-d', 'lattes', '-f', '.\stable\endereco.sql'])
+subprocess.run(['psql'] + PSQL_FLAGS + ['-d', 'lattes', '-f', '.\stable\\final.sql'])
 
 if RUN_PSQL:
     subprocess.run(['psql'] + PSQL_FLAGS + ['-d', 'lattes', '-f', '.\\tests\\vania.sql'])
