@@ -8,7 +8,7 @@ Premio(PK codPremio, Titulo, Ano, FK codInstituicao)
 Departamento(PK codDepto, nomeDepto, FK codInstituicao)
 Instituicao(PK codInsituicao, nomeInstituicao, abreviacao, FK codLogradouro)
 
-Logradouro(PK codLogradouro, CEP, Nome, FK codTipoLogradouro, FK codBairro)
+Logradouro(PK codLogradouro, CEP, Nome, Complemento, FK codTipoLogradouro, FK codBairro)
 TipoLogradouro(PK codTipoLogradouro, Nome)
 Bairro(PK codBairro, nomeBairro, FK codCidade)
 Cidade(PK codCIdade, nomeCidade, FK codEstado)

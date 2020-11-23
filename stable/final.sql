@@ -1,9 +1,11 @@
+-- BEGIN endereco.sql
+
 CREATE TABLE CVLattes (
     LattesID bigint PRIMARY KEY,
     OrchidID varchar(40),
     telefone bigint,
     homepage varchar(100),
-    OutrasInfo varchar(40),
+    OutrasInfo varchar(100),
     sala integer,
     descricao text,
     fk_Departamento_codDepto integer,
@@ -13,7 +15,8 @@ CREATE TABLE CVLattes (
 CREATE TABLE Logradouro (
     codLogradouro integer PRIMARY KEY,
     CEP integer,
-    Nome varchar(40),
+    Nome varchar(100),
+    Complemento varchar(100),
     fk_TipoLogradouro_codTipoLogradouro integer,
     fk_Bairro_codBairro integer
 );
@@ -97,30 +100,35 @@ CREATE TABLE Bolsa (
 CREATE TABLE Compreende_CVLattes_Lingua_NivelLingua (
     fk_CVLattes_LattesID bigint,
     fk_Lingua_codLingua integer,
-    fk_NivelLingua_codNivelLingua integer
+    fk_NivelLingua_codNivelLingua integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Lingua_codLingua, fk_NivelLingua_codNivelLingua)
 );
 
 CREATE TABLE Fala_CVLattes_Lingua_NivelLingua (
     fk_CVLattes_LattesID bigint,
     fk_Lingua_codLingua integer,
-    fk_NivelLingua_codNivelLingua integer
+    fk_NivelLingua_codNivelLingua integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Lingua_codLingua, fk_NivelLingua_codNivelLingua)
 );
 
 CREATE TABLE Escreve_CVLattes_Lingua_NivelLingua (
     fk_CVLattes_LattesID bigint,
     fk_Lingua_codLingua integer,
-    fk_NivelLingua_codNivelLingua integer
+    fk_NivelLingua_codNivelLingua integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Lingua_codLingua, fk_NivelLingua_codNivelLingua)
 );
 
 CREATE TABLE Le_CVLattes_Lingua_NivelLingua (
     fk_CVLattes_LattesID bigint,
     fk_Lingua_codLingua integer,
-    fk_NivelLingua_codNivelLingua integer
+    fk_NivelLingua_codNivelLingua integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Lingua_codLingua, fk_NivelLingua_codNivelLingua)
 );
 
 CREATE TABLE CVContemplatdo (
     fk_Premio_codPremio integer,
-    fk_CVLattes_LattesID bigint
+    fk_CVLattes_LattesID bigint,
+    PRIMARY KEY (fk_Premio_codPremio, fk_CVLattes_LattesID)
 );
 
 
@@ -386,7 +394,8 @@ CREATE TABLE TipoOrientacao (
 
 CREATE TABLE MembroDaBanca (
     fk_Pessoa_codPessoa integer,
-    fk_Banca_codBanca integer
+    fk_Banca_codBanca integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_Banca_codBanca)
 );
 
 
@@ -639,11 +648,13 @@ CREATE TABLE Edital (
 CREATE TABLE IntegranteProjeto (
     fk_Pessoa_codPessoa integer,
     fk_Financiamento_Projeto_codProjeto integer
+    PRIMARY KEY(fk_Pessoa_codPessoa, fk_Financiamento_Projeto_codProjeto)
 );
 
 CREATE TABLE Financiador (
     fk_Instituicao_codInstituicao integer,
-    fk_Financiamento_Projeto_codProjeto integer
+    fk_Financiamento_Projeto_codProjeto integer,
+    PRIMARY KEY(fk_Instituicao_codInstituicao, fk_Financiamento_Projeto_codProjeto)
 );
 
 
@@ -656,11 +667,6 @@ CREATE TABLE Financiador (
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
     FOREIGN KEY (fk_Departamento_codDepto)
     REFERENCES Departamento (codDepto)
-    ON DELETE RESTRICT;
-
-ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_3
-    FOREIGN KEY (fk_Pessoa_codPessoa)
-    REFERENCES Pessoa (codPessoa)
     ON DELETE RESTRICT;
 
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_4
