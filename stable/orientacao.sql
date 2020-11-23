@@ -23,6 +23,7 @@ CREATE TABLE Orientacao (
     codOrientacao integer PRIMARY KEY,
     Titulo varchar(100),
     Ano integer,
+    orientador boolean,
     fk_Pessoa_codPessoa integer,
     fk_TipoOrientacao_codTipoOrientacao integer,
     fk_Instituicao_codInstituicao integer,
@@ -96,7 +97,7 @@ ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_4
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_5
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE CASCADE;
  
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_6
     FOREIGN KEY (fk_Curso_codCurso)

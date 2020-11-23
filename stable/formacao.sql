@@ -15,7 +15,6 @@ CREATE TABLE FormacaoAcademica (
     codFormacao integer PRIMARY KEY,
     anoFim integer,
     TituloTrabalhoDeConclusao varchar(40),
-    fk_Conceito_codConceito integer,
     fk_Instituicao_codInstituicao integer,
     fk_CVLattes_LattesID integer,
     fk_Titulacao_codTitulacao integer,
@@ -105,6 +104,7 @@ CREATE TABLE Ensino (
     codAtividade integer PRIMARY KEY,
     dataInicio date,
     dataFim date,
+    descricao varchar(100),
     fk_AtuacaoProfissional_codAtuacao integer
 );
 
@@ -112,6 +112,7 @@ CREATE TABLE ServicoTecnico (
     codAtividade integer PRIMARY KEY,
     dataInicio date,
     dataFim date,
+    descricao varchar(100),
     fk_AtuacaoProfissional_codAtuacao integer
 );
 
@@ -124,14 +125,15 @@ CREATE TABLE P_D (
     codAtividade integer PRIMARY KEY,
     dataInicio date,
     dataFim date,
+    descricao varchar(100),
     FK_AtuacaoProfissional_codAtuacao integer
 );
 
 CREATE TABLE ConselhoComissaoConsultoria (
-    descricao varchar(100),
     codAtividade integer PRIMARY KEY,
     dataInicio date,
     dataFim date,
+    descricao varchar(100),
     fk_Cargo_codCargo integer,
     fk_AtuacaoProfissional_codAtuacao integer
 );
@@ -142,10 +144,10 @@ CREATE TABLE Cargo (
 );
 
 CREATE TABLE DirecaoAdm (
-    descricao varchar(100),
     codAtividade integer PRIMARY KEY,
     dataInicio date,
     dataFim date,
+    descricao varchar(100),
     fk_Cargo_codCargo integer,
     fk_AtuacaoProfissional_codAtuacao integer
 );
@@ -171,6 +173,12 @@ CREATE TABLE Area (
 CREATE TABLE GrandeArea (
     codGrandeArea integer PRIMARY KEY,
     Nome varchar(40)
+);
+
+CREATE TABLE ConceitoDoCurso_Curso_Conceito_Instituicao (
+    fk_Curso_codCurso integer,
+    fk_Conceito_codConceito integer,
+    fk_Instituicao_codInstituicao integer
 );
 
 CREATE TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao (
@@ -225,31 +233,26 @@ CREATE TABLE GrandeAreaDaFormacao (
 );
  
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_2
-    FOREIGN KEY (fk_Conceito_codConceito)
-    REFERENCES Conceito (codConceito)
-    ON DELETE CASCADE;
- 
-ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_3
     FOREIGN KEY (fk_Instituicao_codInstituicao, fk_Instituicao_codInstituicao_)
     REFERENCES Instituicao (codInstituicao, codInstituicao)
     ON DELETE SET NULL;
  
-ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_4
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_3
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
     ON DELETE CASCADE;
  
-ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_5
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_4
     FOREIGN KEY (fk_Titulacao_codTitulacao)
     REFERENCES Titulacao (codTitulacao)
     ON DELETE CASCADE;
  
-ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_6
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_5
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
     ON DELETE CASCADE;
  
-ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_7
+ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_6
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
     ON DELETE CASCADE;
@@ -348,6 +351,21 @@ ALTER TABLE Area ADD CONSTRAINT FK_Area_2
     FOREIGN KEY (fk_GrandeArea_codGrandeArea)
     REFERENCES GrandeArea (codGrandeArea)
     ON DELETE CASCADE;
+ 
+ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_1
+    FOREIGN KEY (fk_Curso_codCurso)
+    REFERENCES Curso (codCurso)
+    ON DELETE NO ACTION;
+ 
+ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_2
+    FOREIGN KEY (fk_Conceito_codConceito)
+    REFERENCES Conceito (codConceito)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_3
+    FOREIGN KEY (fk_Instituicao_codInstituicao)
+    REFERENCES Instituicao (codInstituicao)
+    ON DELETE NO ACTION;
  
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
