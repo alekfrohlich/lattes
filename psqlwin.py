@@ -16,7 +16,7 @@ Some usefull shortcuts:
 import subprocess
 
 PSQL_FLAGS = ['-h', 'localhost', '-U', 'postgres', '-p', '5433']
-RUN_PSQL = True
+RUN_PSQL = False
 
 subprocess.run(['dropdb'] + PSQL_FLAGS + ['lattes'])
 subprocess.run(['createdb'] + PSQL_FLAGS + ['lattes'])
