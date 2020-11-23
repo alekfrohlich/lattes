@@ -141,13 +141,13 @@ CREATE TABLE Conceito (
 );
 
 CREATE TABLE Titulacao (
-    nomeTitulacao varchar(20),
-    codTitulacao integer PRIMARY KEY
+    codTitulacao integer PRIMARY KEY,
+    nomeTitulacao varchar(20)
 );
 
 CREATE TABLE FormacaoAcademica (
-    anoInicio integer,
     codFormacao integer PRIMARY KEY,
+    anoInicio integer,
     anoFim integer,
     TituloTrabalhoDeConclusao varchar(40),
     fk_Instituicao_codInstituicao integer,
@@ -159,11 +159,11 @@ CREATE TABLE FormacaoAcademica (
 );
 
 CREATE TABLE FormacaoComplementar (
+    codFormComp integer PRIMARY KEY,
+    Titulo varchar(40),
     cargaHoraria integer,
     anoFim integer,
-    Titulo varchar(40),
     anoIn integer,
-    codFormComp integer PRIMARY KEY,
     fk_CVLattes_LattesID bigint,
     fk_Instituicao_codInstituicao integer
 );
@@ -206,6 +206,7 @@ CREATE TABLE Regime (
     Nome varchar(40)
 );
 
+
 CREATE TABLE NivelDisciplina (
     codNivelDisciplina integer PRIMARY KEY,
     Nome varchar(100)
@@ -216,11 +217,6 @@ CREATE TABLE Disciplina (
     Nome varchar(100),
     fk_NivelDisciplina_codNivelDisciplina integer,
     fk_Curso_codCurso integer
-);
-
-CREATE TABLE ServicoRealizado (
-    codServicoRealizado integer PRIMARY KEY,
-    Titulo varchar(100)
 );
 
 CREATE TABLE Ensino (
@@ -239,6 +235,11 @@ CREATE TABLE ServicoTecnico (
     fk_AtuacaoProfissional_codAtuacao integer
 );
 
+CREATE TABLE ServicoRealizado (
+    codServicoRealizado integer PRIMARY KEY,
+    Titulo varchar(100)
+);
+
 CREATE TABLE LinhaDePesquisa (
     codLinha integer PRIMARY KEY,
     Nome varchar(100)
@@ -252,6 +253,11 @@ CREATE TABLE P_D (
     FK_AtuacaoProfissional_codAtuacao integer
 );
 
+CREATE TABLE Cargo (
+    codCargo integer PRIMARY KEY,
+    Nome varchar(100)
+);
+
 CREATE TABLE ConselhoComissaoConsultoria (
     codAtividade integer PRIMARY KEY,
     dataInicio date,
@@ -259,11 +265,6 @@ CREATE TABLE ConselhoComissaoConsultoria (
     descricao varchar(100),
     fk_Cargo_codCargo integer,
     fk_AtuacaoProfissional_codAtuacao integer
-);
-
-CREATE TABLE Cargo (
-    Nome varchar(100),
-    codCargo integer PRIMARY KEY
 );
 
 CREATE TABLE DirecaoAdm (
@@ -301,58 +302,69 @@ CREATE TABLE GrandeArea (
 CREATE TABLE ConceitoDoCurso_Curso_Conceito_Instituicao (
     fk_Curso_codCurso integer,
     fk_Conceito_codConceito integer,
-    fk_Instituicao_codInstituicao integer
+    fk_Instituicao_codInstituicao integer,
+    PRIMARY KEY (fk_Curso_codCurso, fk_Conceito_codConceito, fk_Instituicao_codInstituicao)
 );
 
 CREATE TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao (
     fk_FormacaoAcademica_codFormacao integer,
     fk_Pessoa_codPessoa integer,
-    fk_Instituicao_codInstituicao integer
+    fk_Instituicao_codInstituicao integer,
+    PRIMARY KEY (fk_FormacaoAcademica_codFormacao, fk_Pessoa_codPessoa, fk_Instituicao_codInstituicao)
 );
 
 CREATE TABLE CursosDaInstituicao (
     fk_Instituicao_codInstituicao integer,
-    fk_Curso_codCurso integer
+    fk_Curso_codCurso integer,
+    PRIMARY KEY (fk_Instituicao_codInstituicao, fk_Curso_codCurso)
 );
 
 CREATE TABLE PalavrasChaveDaFormacao (
     fk_PalavraChave_codPalavraChave integer,
-    fk_FormacaoAcademica_codFormacao integer
+    fk_FormacaoAcademica_codFormacao integer,
+    PRIMARY KEY (fk_PalavraChave_codPalavraChave, fk_FormacaoAcademica_codFormacao)
 );
 
 CREATE TABLE DisciplinasMinistradas (
     fk_Disciplina_codDisciplina integer,
-    fk_Ensino_codAtividade integer
+    fk_Ensino_codAtividade integer,
+    PRIMARY KEY (fk_Disciplina_codDisciplina, fk_Ensino_codAtividade)
 );
 
 CREATE TABLE ServicosRealizados (
     fk_ServicoRealizado_codServicoRealizado integer,
-    fk_ServicoTecnico_codAtividade integer
+    fk_ServicoTecnico_codAtividade integer,
+    PRIMARY KEY (fk_ServicoRealizado_codServicoRealizado, fk_ServicoTecnico_codAtividade)
 );
 
 CREATE TABLE LinhasDePesquisa (
     fk_LinhaDePesquisa_codLinha integer,
-    fk_P_D_codAtividade integer
+    fk_P_D_codAtividade integer,
+    PRIMARY KEY (fk_LinhaDePesquisa_codLinha, fk_P_D_codAtividade)
 );
 
 CREATE TABLE EspecialidadeDaFormacao (
     fk_FormacaoAcademica_codFormacao integer,
-    fk_Especialidade_codEspecialidade integer
+    fk_Especialidade_codEspecialidade integer,
+    PRIMARY KEY (fk_FormacaoAcademica_codFormacao, fk_Especialidade_codEspecialidade)
 );
 
 CREATE TABLE SubAreaDaFormacao (
     fk_FormacaoAcademica_codFormacao integer,
-    fk_SubArea_codSubArea integer
+    fk_SubArea_codSubArea integer,
+    PRIMARY KEY (fk_FormacaoAcademica_codFormacao, fk_SubArea_codSubArea)
 );
 
 CREATE TABLE AreaDaFormacao (
     fk_FormacaoAcademica_codFormacao integer,
-    fk_Area_codArea integer
+    fk_Area_codArea integer,
+    PRIMARY KEY (fk_FormacaoAcademica_codFormacao, fk_Area_codArea)
 );
 
 CREATE TABLE GrandeAreaDaFormacao (
+    fk_FormacaoAcademica_codFormacao integer,
     fk_GrandeArea_codGrandeArea integer,
-    fk_FormacaoAcademica_codFormacao integer
+    PRIMARY KEY (fk_FormacaoAcademica_codFormacao, fk_GrandeArea_codGrandeArea)
 );
 
 
@@ -403,26 +415,25 @@ CREATE TABLE MembroDaBanca (
 
 
 CREATE TABLE Editora (
-    Nome varchar(20),
     codEditora integer PRIMARY KEY,
+    Nome varchar(20),
     fk_Cidade_codCidade integer
 );
 
 CREATE TABLE Livro (
+    codLivro integer PRIMARY KEY,
     Ano integer,
     Volume integer,
     Edicao integer,
     qtdPaginas integer,
     Titulo varchar(40),
-    codLivro integer PRIMARY KEY,
     fk_Editora_codEditora integer
 );
 
-
 CREATE TABLE ArtigoEmPeriodico (
+    codArtigoEmPeriodico integer PRIMARY KEY,
     Ano integer,
     intervaloPags interval,
-    codArtigoEmPeriodico integer PRIMARY KEY,
     Titulo varchar(40),
     fk_Periodico_codPeriodico integer,
     Volume integer
@@ -516,82 +527,97 @@ CREATE TABLE Assessoria (
 
 CREATE TABLE OrganizadorLivro (
     fk_Pessoa_codPessoa integer,
-    fk_Livro_codLivro integer
+    fk_Livro_codLivro integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_Livro_codLivro)
 );
 
 CREATE TABLE AutorLivro (
     fk_Pessoa_codPessoa integer,
-    fk_Livro_codLivro integer
+    fk_Livro_codLivro integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_Livro_codLivro)
 );
 
 CREATE TABLE AutorArtigoEmPeriodico (
     fk_Pessoa_codPessoa integer,
-    fk_ArtigoEmPeriodico_codArtigoEmPeriodico integer
+    fk_ArtigoEmPeriodico_codArtigoEmPeriodico integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_ArtigoEmPeriodico_codArtigoEmPeriodico)
 );
 
 CREATE TABLE CitacoesPelaFerramenta (
     fk_FerramentaDeBusca_codFerramenta integer,
     fk_ArtigoEmPeriodico_codArtigoEmPeriodico integer,
-    Quantidade integer
+    Quantidade integer,
+    PRIMARY KEY (fk_FerramentaDeBusca_codFerramenta, fk_ArtigoEmPeriodico_codArtigoEmPeriodico)
 );
 
 CREATE TABLE ParticipacaoDoCVEmEvento (
+    fk_CVLattes_LattesID bigint,
     fk_Evento_codEvento integer,
-    fk_CVLattes_LattesID bigint
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Evento_codEvento)
 );
 
 CREATE TABLE OrganizacaoDeEventoPeloCV (
     fk_CVLattes_LattesID bigint,
-    fk_Evento_codEvento integer
+    fk_Evento_codEvento integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Evento_codEvento)
 );
 
 CREATE TABLE AutorCapitulo (
+    fk_Pessoa_codPessoa integer,
     fk_CapituloDeLivro_codCap integer,
-    fk_Pessoa_codPessoa integer
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_CapituloDeLivro_codCap)
 );
 
 CREATE TABLE AutorPublicacaoEmCongresso (
+    fk_Pessoa_codPessoa integer,
     fk_PublicacaoEmCongresso_codArtigoEmCongresso integer,
-    fk_Pessoa_codPessoa integer
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_PublicacaoEmCongresso_codArtigoEmCongresso)
 );
 
 CREATE TABLE AutorApresentacao (
     fk_Pessoa_codPessoa integer,
-    fk_ApresentacaoDeTrabalho_codApresentacao integer
+    fk_ApresentacaoDeTrabalho_codApresentacao integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_ApresentacaoDeTrabalho_codApresentacao)
 );
 
 CREATE TABLE AutorOutraProd (
     fk_Pessoa_codPessoa integer,
-    fk_OutraProducaoBibliografica_codOutraProd integer
+    fk_OutraProducaoBibliografica_codOutraProd integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_OutraProducaoBibliografica_codOutraProd)
 );
 
 CREATE TABLE Participante (
     fk_Pessoa_codPessoa integer,
-    fk_ProducaoTecnica_codProdTecnica integer
+    fk_ProducaoTecnica_codProdTecnica integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_ProducaoTecnica_codProdTecnica)
 );
 
 CREATE TABLE AutorProgramaPC (
     fk_Pessoa_codPessoa integer,
-    fk_ProgramaDePC_codProgramaPC integer
+    fk_ProgramaDePC_codProgramaPC integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_ProgramaDePC_codProgramaPC)
 );
 
 CREATE TABLE Consultor (
     fk_Pessoa_codPessoa integer,
-    fk_Assessoria_codAssessoria integer
+    fk_Assessoria_codAssessoria integer,
+    PRIMARY KEY (fk_Pessoa_codPessoa, fk_Assessoria_codAssessoria)
 );
 
 CREATE TABLE RevisorDePeriodico (
     fk_CVLattes_LattesID bigint,
     fk_Periodico_codPeriodico integer,
     anoFim integer,
-    anoInicio integer
+    anoInicio integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Periodico_codPeriodico)
 );
 
 CREATE TABLE RevisorDeProjetos (
     fk_CVLattes_LattesID bigint,
     fk_Instituicao_codInstituicao integer,
     anoInicio integer,
-    anoFim integer
+    anoFim integer,
+    PRIMARY KEY (fk_CVLattes_LattesID, fk_Instituicao_codInstituicao)
 );
 
 
@@ -604,6 +630,7 @@ CREATE TABLE Situacao (
 );
 
 CREATE TABLE Financiamento_Projeto (
+    codProjeto integer PRIMARY KEY,
     Valor real,
     anoInicio integer,
     qtdeDoutorado integer,
@@ -614,7 +641,6 @@ CREATE TABLE Financiamento_Projeto (
     anoFim integer,
     qtdMestrado integer,
     descricao varchar(20),
-    codProjeto integer PRIMARY KEY,
     numOrientacoes integer,
     fk_Situacao_codSituacao integer,
     fk_NaturezaProjeto_codNatureza integer,
@@ -626,8 +652,8 @@ CREATE TABLE Financiamento_Projeto (
 );
 
 CREATE TABLE NaturezaProjeto (
-    nomeNatureza varchar(10),
-    codNatureza integer PRIMARY KEY
+    codNatureza integer PRIMARY KEY,
+    nomeNatureza varchar(10)
 );
 
 CREATE TABLE NaturezaFinanciamento (
@@ -647,7 +673,7 @@ CREATE TABLE Edital (
 
 CREATE TABLE IntegranteProjeto (
     fk_Pessoa_codPessoa integer,
-    fk_Financiamento_Projeto_codProjeto integer
+    fk_Financiamento_Projeto_codProjeto integer,
     PRIMARY KEY(fk_Pessoa_codPessoa, fk_Financiamento_Projeto_codProjeto)
 );
 
