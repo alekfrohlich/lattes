@@ -434,13 +434,13 @@ CREATE TABLE PublicacaoEmCongresso (
     codArtigoEmCongresso integer PRIMARY KEY,
     Titulo varchar(40),
     intPags interval,
-    fk_TipoProducao_codTipoProducaoCientifica integer,
+    fk_TipoProducao_codTipoProducao integer,
     fk_Evento_codEvento integer,
     NomeAnais varchar(100)
 );
 
 CREATE TABLE TipoProducao (
-    codTipoProducaoCientifica integer PRIMARY KEY,
+    codTipoProducao integer PRIMARY KEY,
     Nome varchar(20)
 );
 
@@ -468,7 +468,7 @@ CREATE TABLE ApresentacaoDeTrabalho (
     codApresentacao integer PRIMARY KEY,
     Titulo varchar(100),
     ano integer,
-    fk_TipoProducao_codTipoProducaoCientifica integer
+    fk_TipoProducao_codTipoProducao integer
 );
 
 CREATE TABLE OutraProducaoBibliografica (
@@ -476,7 +476,7 @@ CREATE TABLE OutraProducaoBibliografica (
     titulo varchar(40),
     ano integer,
     localNaInstituicao varchar(40),
-    fk_TipoProducao_codTipoProducaoCientifica integer,
+    fk_TipoProducao_codTipoProducao integer,
     fk_Cidade_codCidade integer
 );
 
@@ -484,7 +484,7 @@ CREATE TABLE ProducaoTecnica (
     codProdTecnica integer PRIMARY KEY,
     Titulo varchar(100),
     ano integer,
-    fk_TipoProducao_codTipoProducaoCientifica integer
+    fk_TipoProducao_codTipoProducao integer
 );
 
 CREATE TABLE Qualis (
@@ -1122,8 +1122,8 @@ ALTER TABLE Periodico ADD CONSTRAINT FK_Periodico_2
     ON DELETE RESTRICT;
 
 ALTER TABLE PublicacaoEmCongresso ADD CONSTRAINT FK_PublicacaoEmCongresso_2
-    FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
-    REFERENCES TipoProducao (codTipoProducaoCientifica)
+    FOREIGN KEY (fk_TipoProducao_codTipoProducao)
+    REFERENCES TipoProducao (codTipoProducao)
     ON DELETE RESTRICT;
 
 ALTER TABLE PublicacaoEmCongresso ADD CONSTRAINT FK_PublicacaoEmCongresso_3
@@ -1147,13 +1147,13 @@ ALTER TABLE CapituloDeLivro ADD CONSTRAINT FK_CapituloDeLivro_2
     ON DELETE RESTRICT;
 
 ALTER TABLE ApresentacaoDeTrabalho ADD CONSTRAINT FK_ApresentacaoDeTrabalho_2
-    FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
-    REFERENCES TipoProducao (codTipoProducaoCientifica)
+    FOREIGN KEY (fk_TipoProducao_codTipoProducao)
+    REFERENCES TipoProducao (codTipoProducao)
     ON DELETE RESTRICT;
 
 ALTER TABLE OutraProducaoBibliografica ADD CONSTRAINT FK_OutraProducaoBibliografica_2
-    FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
-    REFERENCES TipoProducao (codTipoProducaoCientifica)
+    FOREIGN KEY (fk_TipoProducao_codTipoProducao)
+    REFERENCES TipoProducao (codTipoProducao)
     ON DELETE RESTRICT;
 
 ALTER TABLE OutraProducaoBibliografica ADD CONSTRAINT FK_OutraProducaoBibliografica_3
@@ -1162,8 +1162,8 @@ ALTER TABLE OutraProducaoBibliografica ADD CONSTRAINT FK_OutraProducaoBibliograf
     ON DELETE RESTRICT;
 
 ALTER TABLE ProducaoTecnica ADD CONSTRAINT FK_ProducaoTecnica_2
-    FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
-    REFERENCES TipoProducao (codTipoProducaoCientifica)
+    FOREIGN KEY (fk_TipoProducao_codTipoProducao)
+    REFERENCES TipoProducao (codTipoProducao)
     ON DELETE RESTRICT;
 
 ALTER TABLE Assessoria ADD CONSTRAINT FK_Assessoria_2

@@ -1,125 +1,153 @@
 ### Endereco ###
-#' Endereco -> formacao-> projeto -> producao -> orientacao
-CVLattes(PK LattesID, OrchidID, telefone, homepage, OutrasInfo, FK codDepto, FK codPessoa)
-CVContemplado(FK codPremio, FK LattesID)
+# Endereco -> formacao-> projeto -> producao -> orientacao
+
+CVLattes(PK LattesID, OrchidID, telefone, homepage, OutrasInfo, sala, descricao, FK codDepto, FK codBolsa)
+CVContemplado(PK(FK codPremio, FK LattesID))
+
 Premio(PK codPremio, Titulo, Ano, FK codInstituicao)
 Departamento(PK codDepto, nomeDepto, FK codInstituicao)
 Instituicao(PK codInsituicao, nomeInstituicao, abreviacao, FK codLogradouro)
-Logradouro(PK codLogradouro, CEP, Nome, FK codTipoLogradouro, FK codBairro) 
+
+Logradouro(PK codLogradouro, CEP, Nome, FK codTipoLogradouro, FK codBairro)
 TipoLogradouro(PK codTipoLogradouro, Nome)
 Bairro(PK codBairro, nomeBairro, FK codCidade)
 Cidade(PK codCIdade, nomeCidade, FK codEstado)
 Estado(PK codEstado, nomeEstado, FK codPais)
 Pais(PK codPais, nomePais)
+
 Lingua(PK codLingua, nomeLingua)
 NivelLingua(PK codNivelLingua, nomeNivelLingua)
-Compreende(FK LattesID, FK codLingua, FK codNivelLingua)
-Fala(FK LattesID, FK codLingua, FK codNivelLingua)
-Escreve(FK LattesID, FK codLingua, FK codNivelLingua)
-Le(FK LattesID, FK codLingua, FK codNivelLingua)
-Pessoa(PK codPessoa, nomePessoa)
-NomeEmCitacao(PK codNome, nomeCItacao)
-NomesEmCitacao(FK codNome, FK codPessoa)
+Compreende(PK(FK LattesID, FK codLingua, FK codNivelLingua))
+Fala(PK(FK LattesID, FK codLingua, FK codNivelLingua))
+Escreve(PK(FK LattesID, FK codLingua, FK codNivelLingua))
+Le(PK(FK LattesID, FK codLingua, FK codNivelLingua))
+
+Pessoa(PK codPessoa, nomePessoa, FK LattesID)
+NomeEmCitacao(PK codNome, nomeCItacao, FK codPessoa)
 
 ### Formacao ###
-#' Onde atributo esta so nome, eu pus nomeEntidade
 
 Curso(PK codCurso, nomeCurso)
-FormacaoAcademica(PK codFormacao, anoInicio, anoFim, TituloTrabalhoConclusao, 
-    FK codConceito, FK codInstituicao as InstituicaoFormacao, FK codInstituicao AS 
-    InstituicaoBolsa , FK LattesID, FK codTitulacao, FK codPessoa AS     
-    Orientador, FK codCurso, FK codEspecialidade)
-PeriodoSanduiche(FK codFormacao, FK codPessoa as orientadorSanduiche, FK codInstituicao)
-CursosDaInstituicao(FK codCurso, FK codInstituicao)
-PalavraChave(PK codPalavraChave, nomePalavraChave)
-PalavrasChaveDaFormacao(FK codPalavraChave, FK codFormacao)
-Titulacao(PK codTitulacao, nomeTitulacao)
+FormacaoAcademica(PK codFormacao, anoInicio, anoFim, TituloTrabalhoConclusao,
+    FK codInstituicao as InstituicaoFormacao, FK codInstituicao AS
+    InstituicaoBolsa , FK LattesID, FK codTitulacao, FK codPessoa AS
+    Orientador, FK codCurso)
+CursosDaInstituicao(PK(FK codCurso, FK codInstituicao))
+ConceitoDoCursoDaInstituicao(PK(FK codCurso, FK codInstituicao, FK codConceito))
 Conceito(PK codConceito, nomeConceito)
-Especialidade(PK codEspecialidade, nomeEspecialidade, FK codSubArea) 
+Titulacao(PK codTitulacao, nomeTitulacao)
+CursosDaInstituicao(FK codInstituicao, FK codCurso)
+
+PeriodoSanduiche(PK(FK codFormacao, FK codPessoa as orientadorSanduiche, FK codInstituicao))
+
+PalavraChave(PK codPalavraChave, nomePalavraChave)
+PalavrasChaveDaFormacao(PK(FK codPalavraChave, FK codFormacao))
+
+Especialidade(PK codEspecialidade, nomeEspecialidade, FK codSubArea)
 SubArea(PK codSubArea, nomeSubArea, FK codArea)
 Area(PK codArea, nomeArea, FK codGrandeArea)
 GrandeArea(PK codGrandeArea, nomeGrandeArea)
-FormacaoComplementar(PL codFormComp, cargaHoraria, anoFim, Titulo, anoIn, FK LattesID,
+EspecialidadeDaFormacao(PK(FK codFormacao, codEspecialidade))
+SubAreaDaFormacao(PK(FK codFormacao, codSubArea))
+AreaDaFormacao(PK(FK codFormacao, codArea))
+GrandeAreaDaFormacao(PK(FK codFormacao, codGrandeArea))
+
+FormacaoComplementar(PK codFormComp, cargaHoraria, anoFim, Titulo, anoIn, FK LattesID,
     FK codInstituicao)
-Curso(PK codCurso, nomeCurso)
-CursosDaInstituicao(FK codInstituicao, FK codCurso)
-Disciplina(PK codDisciplina, nomeDisciplina, FK codNIvelDisciplina, FK codCurso)
-DisciplinaMinistrada(FK codDisciplina, FK codAtuacao) 
-NivelDisciplina(PK codNivelDisciplina, nomeNivelDisciplina)
-AtuacaoProfissional(PK codAtuacao, anoInicio, anoFim, cargaHoraria, outrasInfo, 
-    AtuacaoProfissional_TIPO, FK LattesID, FK codInsituicao, FK codEnquadramento, 
-    FK codVinculo, FK codRegime, FK codCargo AS cargoADM FK codCargo AS cargoComissao)
-Cargo(PK codCargo, nomeCargo)
-LinhaDePesquisa(PK codLinha, nomeLinhaDePesquisa)
-ServicoRealizado(PK codServicoRealizado, titulo)
-ServicosRealizados(FK codServicoRealizado, FK codatuacao)
+
+AtuacaoProfissional(PK codAtuacao, anoInicio, anoFim, cargaHoraria, outrasInfo,
+    FK LattesID, FK codInsituicao, FK codEnquadramento,
+    FK codVinculo, FK codRegime)
 Vinculo(PK codVinculo, nomeVinculo)
 Regime(PK codRegime, nomeRegime)
 Enquadramento(PK codEnquadramento, nomeEnquadramento)
 
-### Projeto ###
+Ensino(PK codAtividade, dataInicio, dataFim, descricao, FK codAtuacao)
+DisciplinasMinistradas(PK(FK codDisciplina, FK codAtuacao))
+Disciplina(PK codDisciplina, nomeDisciplina, FK codNIvelDisciplina, FK codCurso)
+NivelDisciplina(PK codNivelDisciplina, nomeNivelDisciplina)
 
-Financiamento_Projeto(PK codProjeto, valor, anoInicio, anoFim, tituloProjeto, descricao, 
-    numProducoes, numOrientacoes, qtDoutorado, qtMestrado, qtGrad, inovacao, Processo,
-    FK codSituacao,  FK codNatureza, FK codPessoa, FK codNaturezaFinanciamento, 
-    FK codMoeda, FK numEdital)
-Situacao(PK codSituacao, nomeSituacao)
-NaturezaProjeto(PK codNatureza, nomeNatureza)
-IntegranteProjeto(FK codPessoa, FK codProjeto)
-NaturezaFinanciamento(PK codNaturezaFinanciamento, nomeNatureza)
-Financiador(FK codInstituicao, FK codProjeto)
-Edital(PK numEdital, nomeEdital)
-Moeda(PK codMoeda, nomeMoeda)
+DirecaoAdm(PK codAtividade, dataInicio, dataFim, descricao, FK codCargo, FK codAtuacao)
+ConselhoComissaoConsultoria(PK codAtividade, dataInicio, dataFim, descricao, FK codCargo, FK codAtuacao)
+Cargo(PK codCargo, nomeCargo)
+
+P_D(PK codAtividade, dataInicio, dataFim, descricao, FK codAtuacao)
+LinhaDePesquisa(PK codLinha, nomeLinhaDePesquisa)
+LinhasDePesquisa(PK(FK codLinha, codAtividade))
+
+ServicoTecnico(PK codAtividade, dataInicio, dataFim, descricao, FK codAtuacao)
+ServicoRealizado(PK codServicoRealizado, titulo)
+ServicosRealizados(PK(FK codServicoRealizado, FK codAtuacao))
+
+### Orientacao ###
+
+Banca(PK codBanca, titulo, ano, FK codTipoBanca, FK codPessoa, FK codInstituicao,
+    FK codCurso)
+MembroDaBanca(PK(FK codPessoa, FK codBanca))
+TipoBanca(PK codTipoBanca, nomeTipoBanca)
+Orientacao(PK codOrientacao, titulo, ano, orientador?, FK codPessoa AS alunoDaOrientacao, FK codTipoOrientacao,
+    FK codInstituicao AS InstituicaoDeAuxilio, FK codInstituicao AS InstituicaoDoAluno, FK LattesID, FK codCurso)
+TipoOrientacao(PK codTipoOrientacao, nomeTipoOrientacao)
 
 ### Producao ###
 
 Evento(PK codEvento, nomeEvento, ano, FK codTipoEvento, FK codCidade)
 TipoEvento(PK codTipoEvento, nomeTipoEvento)
-OrganizacaoDeEvento(FK LattesID, FK codEvento)
-ParticipacaoDoEvento(FK LattesID, FK codEvento)
+OrganizacaoDeEvento (PK(FK LattesID, FK codEvento))
+ParticipacaoDoEvento(PK(FK LattesID, FK codEvento))
+
+TipoProducao(PK codTipoProducao, nomeTipoProducao)
+
+ProducaoTecnica(PK codProducaoTecnica, titulo, ano, FK codTipoProducao)
 PublicacaoEmCongresso(PK codArtigoEmCongresso, titulo, intPags, nomeAnais,
-    FK codTipoEvento, FK codEvento)
-AutorPublicacaoEmCongresso(FK codArtigoEmCongresso, FK codPessoa)
-TipoProducao(PK codTipoProducaoCientifica, nomeTipoProducao)
-ProducaoTecnica(PK codProducaoTecnica, titulo, ano, FK codTipoProducaoCientifica)
-Participante(FK codPessoa, FK codProducaoTecnica)
+    FK codTipoProducao, FK codEvento)
 ApresentacaoDeTrabalho(PK codApresentacao, titulo, ano, FK codTipoProducao)
-AutorApresentacao(FK codPessoa, FK ApresentacaoDeTrabalho)
-OuraProducaoBibliografica(PK codOutraProd, titulo, ano, localNaInstituicao, 
-    FK codTipoProducaoCientifica, FK codCidade)
-AutorOutraProd(FK codPessoa, FK codOutraProd)
-Editora(PK codEditora, nomeEditora, FK codCidade)
-Livro(PK codLivro, ano, volume, edicao, qtPaginas, titulo, FK codEditora)
-OrganizadorLivro(FK codPessoa, FK codLivro)
-AutorLivro(Fk codPessoa, FK codLivro)
-CapituloDeLivro(PK codCap, titulo, intervaloPags, FK codLivro)
-AutorCapitulo(FK codPessoa, FK codCap)
-ProgramaDePc(PK codProgramaPC, nomeProgramaDePc, ano)
-AutorProgramaPC(FK codPessoa, FK codProgramaPc)
-Assessoria(PK codAssessoria, titulo, ano, FK codInstituicao)
-Consultor(FK codPessoa, FK codAssessoria)
-RevisorDeProjetos(FK LattesID, FK codInstituicao, anoInicio, anoFim) #Estranho? Perguntar
-RevisorDePeriodico(FK LattesID, FK codPeriodico, anoInicio, anoFim)
+OuraProducaoBibliografica(PK codOutraProd, titulo, ano, localNaInstituicao,
+    FK codTipoProducao, FK codCidade)
+
+Participante(PK(FK codPessoa, FK codProducaoTecnica))
+AutorPublicacaoEmCongresso(PK(FK codArtigoEmCongresso, FK codPessoa))
+AutorApresentacao(PK(FK codPessoa, FK ApresentacaoDeTrabalho))
+AutorOutraProd(PK(FK codPessoa, FK codOutraProd))
+
 Periodico(PK codPeriodico, nomePeriodico, FK codQualis)
 Qualis(PK codQualis, nomeQualis)
-ArtigoEmPeriodico(PK codArtigoEmPeriodico, ano, intervaloPags, titulo, volume, 
-    FK codPeriodico)
-AutorArtigoEmPeriodico(FK codPessoa, FK codArtigoEmPeriodico)
 FerramentaDeBusca(PK codFerramenta, nomeFerramentaDeBusca)
-CitacoesPelaFerramenta(FK codFerramenta, FK codArtigoEmPeriodico, quantidade) #Estranho?
 
-### Orientacao ###
+ArtigoEmPeriodico(PK codArtigoEmPeriodico, ano, intervaloPags, titulo, volume,
+    FK codPeriodico)
 
-Banca(PK codBanca, titulo, ano, FK codTipoBanca, FK codPessoa, FK codInstituicao,
-    FK codCUrso)
-MembroDaBanca(FK codPessoa, FK codBanca)
-TipoBanca(PK codTipoBanca, nomeTipoBanca)
-Orientacao(PK codOrientacao, titulo, ano, FK codPessoa, FK codTipoOrientacao, 
-    FK codInstituicao AS ###, FK codInstituicao AS ###, FK LattesID, FK codCurso) 
-TipoOrientacao(PK codTipoOrientacao, nomeTipoOrientacao)
+AutorArtigoEmPeriodico(PK(FK codPessoa, FK codArtigoEmPeriodico))
+CitacoesPelaFerramenta(PK(FK codFerramenta, FK codArtigoEmPeriodico), quantidade)
 
 
+Editora(PK codEditora, nomeEditora, FK codCidade)
+Livro(PK codLivro, ano, volume, edicao, qtPaginas, titulo, FK codEditora)
+AutorLivro      (PK(Fk codPessoa, FK codLivro))
+OrganizadorLivro(PK(FK codPessoa, FK codLivro))
 
+CapituloDeLivro(PK codCap, titulo, intervaloPags, FK codLivro)
+AutorCapitulo(PK(FK codPessoa, FK codCap))
 
+ProgramaDePc(PK codProgramaPC, nomeProgramaDePc, ano)
+AutorProgramaPC(PK(FK codPessoa, FK codProgramaPc))
 
+Assessoria(PK codAssessoria, titulo, ano, FK codInstituicao)
+Consultor(PK(FK codPessoa, FK codAssessoria))
 
+RevisorDeProjetos(PK(FK LattesID, FK codInstituicao), anoInicio, anoFim)
+RevisorDePeriodico(PK(FK LattesID, FK codPeriodico), anoInicio, anoFim)
+
+### Projeto ###
+
+Projeto(PK codProjeto, valor, anoInicio, anoFim, tituloProjeto, descricao,
+    numProducoes, numOrientacoes, qtDoutorado, qtMestrado, qtGrad, inovacao, Processo,
+    FK codSituacao,  FK codNatureza, FK codPessoa AS coordenador, FK codNaturezaFinanciamento,
+    FK codMoeda, FK numEdital)
+Situacao(PK codSituacao, nomeSituacao)
+NaturezaProjeto(PK codNatureza, nomeNatureza)
+NaturezaFinanciamento(PK codNaturezaFinanciamento, nomeNatureza)
+IntegranteProjeto(PK(FK codPessoa, FK codProjeto))
+Financiador(PK(FK codInstituicao, FK codProjeto))
+Edital(PK numEdital, nomeEdital)
+Moeda(PK codMoeda, nomeMoeda)
