@@ -1,13 +1,12 @@
 CREATE TABLE CVLattes (
     LattesID bigint PRIMARY KEY,
     OrchidID varchar(40),
-    telefone integer,
-    homepage varchar(40),
+    telefone bigint,
+    homepage varchar(100),
     OutrasInfo varchar(40),
     sala integer,
     descricao text,
     fk_Departamento_codDepto integer,
-    fk_Pessoa_codPessoa integer,
     fk_Bolsa_codBolsa integer
 );
 
@@ -21,12 +20,12 @@ CREATE TABLE Logradouro (
 
 CREATE TABLE Bairro (
     codBairro integer PRIMARY KEY,
-    nomeBairro varchar(20),
+    nomeBairro varchar(40),
     fk_Cidade_codCidade integer
 );
 
 CREATE TABLE Cidade (
-    nomeCidade varchar(20),
+    nomeCidade varchar(40),
     codCidade integer PRIMARY KEY,
     fk_Estado_codEstado integer
 );
@@ -61,8 +60,10 @@ CREATE TABLE Departamento (
 );
 
 CREATE TABLE Pessoa (
+    codPessoa integer PRIMARY KEY,
     Nome varchar(40),
-    codPessoa integer PRIMARY KEY
+    LattesID bigint,
+    FOREIGN KEY (LattesID) REFERENCES CVLattes(LattesID)
 );
 
 CREATE TABLE Lingua (
@@ -655,57 +656,57 @@ CREATE TABLE Financiador (
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_2
     FOREIGN KEY (fk_Departamento_codDepto)
     REFERENCES Departamento (codDepto)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_3
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CVLattes ADD CONSTRAINT FK_CVLattes_4
     FOREIGN KEY (fk_Bolsa_codBolsa)
     REFERENCES Bolsa (codBolsa)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_2
     FOREIGN KEY (fk_TipoLogradouro_codTipoLogradouro)
     REFERENCES TipoLogradouro (codTipoLogradouro)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Logradouro ADD CONSTRAINT FK_Logradouro_3
     FOREIGN KEY (fk_Bairro_codBairro)
     REFERENCES Bairro (codBairro)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Bairro ADD CONSTRAINT FK_Bairro_2
     FOREIGN KEY (fk_Cidade_codCidade)
     REFERENCES Cidade (codCidade)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Cidade ADD CONSTRAINT FK_Cidade_2
     FOREIGN KEY (fk_Estado_codEstado)
     REFERENCES Estado (codEstado)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Estado ADD CONSTRAINT FK_Estado_2
     FOREIGN KEY (fk_Pais_codPais)
     REFERENCES Pais (codPais)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Instituicao ADD CONSTRAINT FK_Instituicao_2
     FOREIGN KEY (fk_Logradouro_codLogradouro)
     REFERENCES Logradouro (codLogradouro)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Departamento ADD CONSTRAINT FK_Departamento_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Premio ADD CONSTRAINT FK_Premio_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE NomeEmCitacao ADD CONSTRAINT FK_NomeEmCitacao_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -715,12 +716,12 @@ ALTER TABLE NomeEmCitacao ADD CONSTRAINT FK_NomeEmCitacao_2
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
@@ -730,12 +731,12 @@ ALTER TABLE Compreende_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Compreende_
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
@@ -745,12 +746,12 @@ ALTER TABLE Fala_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Fala_CVLattes_Lin
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
@@ -760,12 +761,12 @@ ALTER TABLE Escreve_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Escreve_CVLatt
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_2
     FOREIGN KEY (fk_Lingua_codLingua)
     REFERENCES Lingua (codLingua)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_NivelLingua_3
     FOREIGN KEY (fk_NivelLingua_codNivelLingua)
@@ -775,12 +776,12 @@ ALTER TABLE Le_CVLattes_Lingua_NivelLingua ADD CONSTRAINT FK_Le_CVLattes_Lingua_
 ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_1
     FOREIGN KEY (fk_Premio_codPremio)
     REFERENCES Premio (codPremio)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 
 -- BEGIN ALTER formacao.sql
@@ -789,147 +790,147 @@ ALTER TABLE CVContemplatdo ADD CONSTRAINT FK_CVContemplatdo_2
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_2_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
         REFERENCES Instituicao (codInstituicao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_2_2
     FOREIGN KEY (fk_Instituicao_codInstituicao_)
         REFERENCES Instituicao (codInstituicao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_3
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_4
     FOREIGN KEY (fk_Titulacao_codTitulacao)
     REFERENCES Titulacao (codTitulacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_5
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoAcademica ADD CONSTRAINT FK_FormacaoAcademica_6
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE FormacaoComplementar ADD CONSTRAINT FK_FormacaoComplementar_3
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_3
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_4
     FOREIGN KEY (fk_Enquadramento_codEnquadramento)
     REFERENCES Enquadramento (codEnquadramento)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_5
     FOREIGN KEY (fk_Vinculo_codVinculo)
     REFERENCES Vinculo (codVinculo)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AtuacaoProfissional ADD CONSTRAINT FK_AtuacaoProfissional_6
     FOREIGN KEY (fk_Regime_codRegime)
     REFERENCES Regime (codRegime)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Disciplina ADD CONSTRAINT FK_Disciplina_2
     FOREIGN KEY (fk_NivelDisciplina_codNivelDisciplina)
     REFERENCES NivelDisciplina (codNivelDisciplina)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Disciplina ADD CONSTRAINT FK_Disciplina_3
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Ensino ADD CONSTRAINT FK_Ensino_2
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ServicoTecnico ADD CONSTRAINT FK_ServicoTecnico_2
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE P_D ADD CONSTRAINT FK_P_D_2
     FOREIGN KEY (FK_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ConselhoComissaoConsultoria ADD CONSTRAINT FK_ConselhoComissaoConsultoria_2
     FOREIGN KEY (fk_Cargo_codCargo)
     REFERENCES Cargo (codCargo)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ConselhoComissaoConsultoria ADD CONSTRAINT FK_ConselhoComissaoConsultoria_3
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE DirecaoAdm ADD CONSTRAINT FK_DirecaoAdm_2
     FOREIGN KEY (fk_Cargo_codCargo)
     REFERENCES Cargo (codCargo)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE DirecaoAdm ADD CONSTRAINT FK_DirecaoAdm_3
     FOREIGN KEY (fk_AtuacaoProfissional_codAtuacao)
     REFERENCES AtuacaoProfissional (codAtuacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Especialidade ADD CONSTRAINT FK_Especialidade_2
     FOREIGN KEY (fk_SubArea_codSubArea)
     REFERENCES SubArea (codSubArea)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE SubArea ADD CONSTRAINT FK_SubArea_2
     FOREIGN KEY (fk_Area_codArea)
     REFERENCES Area (codArea)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Area ADD CONSTRAINT FK_Area_2
     FOREIGN KEY (fk_GrandeArea_codGrandeArea)
     REFERENCES GrandeArea (codGrandeArea)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_1
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_2
     FOREIGN KEY (fk_Conceito_codConceito)
     REFERENCES Conceito (codConceito)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ConceitoDoCurso_Curso_Conceito_Instituicao ADD CONSTRAINT FK_ConceitoDoCurso_Curso_Conceito_Instituicao_3
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE NO ACTION;
+    ON DELETE RESTRICT;
 
 ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT FK_PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -944,12 +945,12 @@ ALTER TABLE PeriodoSanduiche_FormacaoAcademica_Pessoa_Instituicao ADD CONSTRAINT
 ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CursosDaInstituicao ADD CONSTRAINT FK_CursosDaInstituicao_2
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_1
     FOREIGN KEY (fk_PalavraChave_codPalavraChave)
@@ -959,7 +960,7 @@ ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_1
 ALTER TABLE PalavrasChaveDaFormacao ADD CONSTRAINT FK_PalavrasChaveDaFormacao_2
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE DisciplinasMinistradas ADD CONSTRAINT FK_DisciplinasMinistradas_1
     FOREIGN KEY (fk_Disciplina_codDisciplina)
@@ -969,7 +970,7 @@ ALTER TABLE DisciplinasMinistradas ADD CONSTRAINT FK_DisciplinasMinistradas_1
 ALTER TABLE DisciplinasMinistradas ADD CONSTRAINT FK_DisciplinasMinistradas_2
     FOREIGN KEY (fk_Ensino_codAtividade)
     REFERENCES Ensino (codAtividade)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ServicosRealizados ADD CONSTRAINT FK_ServicosRealizados_1
     FOREIGN KEY (fk_ServicoRealizado_codServicoRealizado)
@@ -979,57 +980,57 @@ ALTER TABLE ServicosRealizados ADD CONSTRAINT FK_ServicosRealizados_1
 ALTER TABLE ServicosRealizados ADD CONSTRAINT FK_ServicosRealizados_2
     FOREIGN KEY (fk_ServicoTecnico_codAtividade)
     REFERENCES ServicoTecnico (codAtividade)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE LinhasDePesquisa ADD CONSTRAINT FK_LinhasDePesquisa_1
     FOREIGN KEY (fk_LinhaDePesquisa_codLinha)
     REFERENCES LinhaDePesquisa (codLinha)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE LinhasDePesquisa ADD CONSTRAINT FK_LinhasDePesquisa_2
     FOREIGN KEY (fk_P_D_codAtividade)
     REFERENCES P_D (codAtividade)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE EspecialidadeDaFormacao ADD CONSTRAINT FK_EspecialidadeDaFormacao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE EspecialidadeDaFormacao ADD CONSTRAINT FK_EspecialidadeDaFormacao_2
     FOREIGN KEY (fk_Especialidade_codEspecialidade)
     REFERENCES Especialidade (codEspecialidade)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE SubAreaDaFormacao ADD CONSTRAINT FK_SubAreaDaFormacao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE SubAreaDaFormacao ADD CONSTRAINT FK_SubAreaDaFormacao_2
     FOREIGN KEY (fk_SubArea_codSubArea)
     REFERENCES SubArea (codSubArea)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AreaDaFormacao ADD CONSTRAINT FK_AreaDaFormacao_1
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AreaDaFormacao ADD CONSTRAINT FK_AreaDaFormacao_2
     FOREIGN KEY (fk_Area_codArea)
     REFERENCES Area (codArea)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE GrandeAreaDaFormacao ADD CONSTRAINT FK_GrandeAreaDaFormacao_1
     FOREIGN KEY (fk_GrandeArea_codGrandeArea)
     REFERENCES GrandeArea (codGrandeArea)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE GrandeAreaDaFormacao ADD CONSTRAINT FK_GrandeAreaDaFormacao_2
     FOREIGN KEY (fk_FormacaoAcademica_codFormacao)
     REFERENCES FormacaoAcademica (codFormacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 
 -- BEGIN ALTER orientacao.sql
@@ -1038,53 +1039,53 @@ ALTER TABLE GrandeAreaDaFormacao ADD CONSTRAINT FK_GrandeAreaDaFormacao_2
 ALTER TABLE Banca ADD CONSTRAINT FK_Banca_2
     FOREIGN KEY (fk_TipoBanca_codBanca)
     REFERENCES TipoBanca (codBanca)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Banca ADD CONSTRAINT FK_Banca_3
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Banca ADD CONSTRAINT FK_Banca_4
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Banca ADD CONSTRAINT FK_Banca_5
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_3
     FOREIGN KEY (fk_TipoOrientacao_codTipoOrientacao)
     REFERENCES TipoOrientacao (codTipoOrientacao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 -- Duplicated REF list; manually solved
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_4_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
         REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_4_2
     FOREIGN KEY (fk_Instituicao_codInstituicao_)
         REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_5
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Orientacao ADD CONSTRAINT FK_Orientacao_6
     FOREIGN KEY (fk_Curso_codCurso)
     REFERENCES Curso (codCurso)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1094,7 +1095,7 @@ ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_1
 ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_2
     FOREIGN KEY (fk_Banca_codBanca)
     REFERENCES Banca (codBanca)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 
 -- BEGIN ALTER producao.sql
@@ -1103,72 +1104,72 @@ ALTER TABLE MembroDaBanca ADD CONSTRAINT FK_MembroDaBanca_2
 ALTER TABLE Editora ADD CONSTRAINT FK_Editora_2
     FOREIGN KEY (fk_Cidade_codCidade)
     REFERENCES Cidade (codCidade)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Livro ADD CONSTRAINT FK_Livro_2
     FOREIGN KEY (fk_Editora_codEditora)
     REFERENCES Editora (codEditora)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ArtigoEmPeriodico ADD CONSTRAINT FK_ArtigoEmPeriodico_2
     FOREIGN KEY (fk_Periodico_codPeriodico)
     REFERENCES Periodico (codPeriodico)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Periodico ADD CONSTRAINT FK_Periodico_2
     FOREIGN KEY (fk_Qualis_codQualis)
     REFERENCES Qualis (codQualis)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE PublicacaoEmCongresso ADD CONSTRAINT FK_PublicacaoEmCongresso_2
     FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
     REFERENCES TipoProducao (codTipoProducaoCientifica)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE PublicacaoEmCongresso ADD CONSTRAINT FK_PublicacaoEmCongresso_3
     FOREIGN KEY (fk_Evento_codEvento)
     REFERENCES Evento (codEvento)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Evento ADD CONSTRAINT FK_Evento_2
     FOREIGN KEY (fk_TipoEvento_codTipoEvento)
     REFERENCES TipoEvento (codTipoEvento)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Evento ADD CONSTRAINT FK_Evento_3
     FOREIGN KEY (fk_Cidade_codCidade)
     REFERENCES Cidade (codCidade)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CapituloDeLivro ADD CONSTRAINT FK_CapituloDeLivro_2
     FOREIGN KEY (fk_Livro_codLivro)
     REFERENCES Livro (codLivro)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ApresentacaoDeTrabalho ADD CONSTRAINT FK_ApresentacaoDeTrabalho_2
     FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
     REFERENCES TipoProducao (codTipoProducaoCientifica)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE OutraProducaoBibliografica ADD CONSTRAINT FK_OutraProducaoBibliografica_2
     FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
     REFERENCES TipoProducao (codTipoProducaoCientifica)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE OutraProducaoBibliografica ADD CONSTRAINT FK_OutraProducaoBibliografica_3
     FOREIGN KEY (fk_Cidade_codCidade)
     REFERENCES Cidade (codCidade)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ProducaoTecnica ADD CONSTRAINT FK_ProducaoTecnica_2
     FOREIGN KEY (fk_TipoProducao_codTipoProducaoCientifica)
     REFERENCES TipoProducao (codTipoProducaoCientifica)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Assessoria ADD CONSTRAINT FK_Assessoria_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1178,17 +1179,17 @@ ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_1
 ALTER TABLE OrganizadorLivro ADD CONSTRAINT FK_OrganizadorLivro_2
     FOREIGN KEY (fk_Livro_codLivro)
     REFERENCES Livro (codLivro)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorLivro ADD CONSTRAINT FK_AutorLivro_2
     FOREIGN KEY (fk_Livro_codLivro)
     REFERENCES Livro (codLivro)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorArtigoEmPeriodico ADD CONSTRAINT FK_AutorArtigoEmPeriodico_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1198,57 +1199,57 @@ ALTER TABLE AutorArtigoEmPeriodico ADD CONSTRAINT FK_AutorArtigoEmPeriodico_1
 ALTER TABLE AutorArtigoEmPeriodico ADD CONSTRAINT FK_AutorArtigoEmPeriodico_2
     FOREIGN KEY (fk_ArtigoEmPeriodico_codArtigoEmPeriodico)
     REFERENCES ArtigoEmPeriodico (codArtigoEmPeriodico)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CitacoesPelaFerramenta ADD CONSTRAINT FK_CitacoesPelaFerramenta_1
     FOREIGN KEY (fk_FerramentaDeBusca_codFerramenta)
     REFERENCES FerramentaDeBusca (codFerramenta)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE CitacoesPelaFerramenta ADD CONSTRAINT FK_CitacoesPelaFerramenta_2
     FOREIGN KEY (fk_ArtigoEmPeriodico_codArtigoEmPeriodico)
     REFERENCES ArtigoEmPeriodico (codArtigoEmPeriodico)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ParticipacaoDoCVEmEvento ADD CONSTRAINT FK_ParticipacaoDoCVEmEvento_1
     FOREIGN KEY (fk_Evento_codEvento)
     REFERENCES Evento (codEvento)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE ParticipacaoDoCVEmEvento ADD CONSTRAINT FK_ParticipacaoDoCVEmEvento_2
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE OrganizacaoDeEventoPeloCV ADD CONSTRAINT FK_OrganizacaoDeEventoPeloCV_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE OrganizacaoDeEventoPeloCV ADD CONSTRAINT FK_OrganizacaoDeEventoPeloCV_2
     FOREIGN KEY (fk_Evento_codEvento)
     REFERENCES Evento (codEvento)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorCapitulo ADD CONSTRAINT FK_AutorCapitulo_1
     FOREIGN KEY (fk_CapituloDeLivro_codCap)
     REFERENCES CapituloDeLivro (codCap)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorCapitulo ADD CONSTRAINT FK_AutorCapitulo_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorPublicacaoEmCongresso ADD CONSTRAINT FK_AutorPublicacaoEmCongresso_1
     FOREIGN KEY (fk_PublicacaoEmCongresso_codArtigoEmCongresso)
     REFERENCES PublicacaoEmCongresso (codArtigoEmCongresso)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorPublicacaoEmCongresso ADD CONSTRAINT FK_AutorPublicacaoEmCongresso_2
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorApresentacao ADD CONSTRAINT FK_AutorApresentacao_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1258,7 +1259,7 @@ ALTER TABLE AutorApresentacao ADD CONSTRAINT FK_AutorApresentacao_1
 ALTER TABLE AutorApresentacao ADD CONSTRAINT FK_AutorApresentacao_2
     FOREIGN KEY (fk_ApresentacaoDeTrabalho_codApresentacao)
     REFERENCES ApresentacaoDeTrabalho (codApresentacao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorOutraProd ADD CONSTRAINT FK_AutorOutraProd_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1268,7 +1269,7 @@ ALTER TABLE AutorOutraProd ADD CONSTRAINT FK_AutorOutraProd_1
 ALTER TABLE AutorOutraProd ADD CONSTRAINT FK_AutorOutraProd_2
     FOREIGN KEY (fk_OutraProducaoBibliografica_codOutraProd)
     REFERENCES OutraProducaoBibliografica (codOutraProd)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Participante ADD CONSTRAINT FK_Participante_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1278,7 +1279,7 @@ ALTER TABLE Participante ADD CONSTRAINT FK_Participante_1
 ALTER TABLE Participante ADD CONSTRAINT FK_Participante_2
     FOREIGN KEY (fk_ProducaoTecnica_codProdTecnica)
     REFERENCES ProducaoTecnica (codProdTecnica)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE AutorProgramaPC ADD CONSTRAINT FK_AutorProgramaPC_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1288,7 +1289,7 @@ ALTER TABLE AutorProgramaPC ADD CONSTRAINT FK_AutorProgramaPC_1
 ALTER TABLE AutorProgramaPC ADD CONSTRAINT FK_AutorProgramaPC_2
     FOREIGN KEY (fk_ProgramaDePC_codProgramaPC)
     REFERENCES ProgramaDePC (codProgramaPC)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Consultor ADD CONSTRAINT FK_Consultor_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1298,27 +1299,27 @@ ALTER TABLE Consultor ADD CONSTRAINT FK_Consultor_1
 ALTER TABLE Consultor ADD CONSTRAINT FK_Consultor_2
     FOREIGN KEY (fk_Assessoria_codAssessoria)
     REFERENCES Assessoria (codAssessoria)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE RevisorDePeriodico ADD CONSTRAINT FK_RevisorDePeriodico_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE RevisorDePeriodico ADD CONSTRAINT FK_RevisorDePeriodico_2
     FOREIGN KEY (fk_Periodico_codPeriodico)
     REFERENCES Periodico (codPeriodico)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE RevisorDeProjetos ADD CONSTRAINT FK_RevisorDeProjetos_1
     FOREIGN KEY (fk_CVLattes_LattesID)
     REFERENCES CVLattes (LattesID)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE RevisorDeProjetos ADD CONSTRAINT FK_RevisorDeProjetos_2
     FOREIGN KEY (fk_Instituicao_codInstituicao)
     REFERENCES Instituicao (codInstituicao)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 
 -- BEGIN ALTER projeto.sql
@@ -1331,27 +1332,27 @@ ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_2
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_3
     FOREIGN KEY (fk_NaturezaProjeto_codNatureza)
     REFERENCES NaturezaProjeto (codNatureza)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_4
     FOREIGN KEY (fk_Pessoa_codPessoa)
     REFERENCES Pessoa (codPessoa)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_5
     FOREIGN KEY (fk_NaturezaFinanciamento_codNaturezaFinanciamento)
     REFERENCES NaturezaFinanciamento (codNaturezaFinanciamento)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_6
     FOREIGN KEY (fk_Moeda_codMoeda)
     REFERENCES Moeda (codMoeda)
-    ON DELETE CASCADE;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Financiamento_Projeto ADD CONSTRAINT FK_Financiamento_Projeto_7
     FOREIGN KEY (fk_Edital_numEdital)
     REFERENCES Edital (numEdital)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_1
     FOREIGN KEY (fk_Pessoa_codPessoa)
@@ -1361,7 +1362,7 @@ ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_1
 ALTER TABLE IntegranteProjeto ADD CONSTRAINT FK_IntegranteProjeto_2
     FOREIGN KEY (fk_Financiamento_Projeto_codProjeto)
     REFERENCES Financiamento_Projeto (codProjeto)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
 
 ALTER TABLE Financiador ADD CONSTRAINT FK_Financiador_1
     FOREIGN KEY (fk_Instituicao_codInstituicao)
@@ -1371,4 +1372,4 @@ ALTER TABLE Financiador ADD CONSTRAINT FK_Financiador_1
 ALTER TABLE Financiador ADD CONSTRAINT FK_Financiador_2
     FOREIGN KEY (fk_Financiamento_Projeto_codProjeto)
     REFERENCES Financiamento_Projeto (codProjeto)
-    ON DELETE SET NULL;
+    ON DELETE RESTRICT;
