@@ -113,11 +113,13 @@ VALUES (1, 1991, 1995, 'Projeto conceitual, lógico e físico de um sistema de c
        (3, 2002, 2006, 'Enhancing Spatial Association Rule Mining in Geographic Databases', 5, 9045199822095908, 3, 10, NULL, 1);
 
 INSERT INTO Conceito
-VALUES (1, 'Capes 7');
+VALUES (1, 'Capes 7'), (2, 'Capes 5'), (3, 'Capes 3');
 
 INSERT INTO ConceitoDoCurso_Curso_Conceito_Instituicao
-VALUES (1, 1, 1),
-       (2, 1, 1);
+VALUES (1, 2, 1),
+       (1, 1, 5),
+       (1, 3, 4),
+       (2, 2, 1);
 
 INSERT INTO CursosDaInstituicao
 VALUES (1, 1), (1, 2), (2, 3), (2, 4);
