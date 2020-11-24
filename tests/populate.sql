@@ -75,24 +75,24 @@ INSERT INTO NomeEmCitacao (fk_Pessoa_codPessoa, numNome, Nome)
 INSERT INTO Lingua
     VALUES (1, 'Ingles'),
            (2, 'Alemao'),
-           (3, 'Espanhol');
+           (3, 'Espanhol'),
+           (4, 'Francês');
 INSERT INTO NivelLingua
     VALUES (1, 'Bem'),
            (2, 'Razoavelmente'),
            (3, 'Pouco');
 INSERT INTO Compreende_CVLattes_Lingua_NivelLingua (fk_CVLattes_LattesID, fk_Lingua_codLingua, fk_NivelLingua_codNivelLingua)
-    VALUES (9045199822095908, 1, 1),
-           (9045199822095908, 2, 1),
-           (9045199822095908, 3, 2);
+    VALUES (9045199822095908, 1, 1), (9045199822095908, 2, 1), (9045199822095908, 3, 2),
+           (5655194264112797, 1, 1), (5655194264112797, 3, 2), (5655194264112797, 4, 1);
 INSERT INTO Fala_CVLattes_Lingua_NivelLingua
-    VALUES (9045199822095908, 1, 1),
-           (9045199822095908, 2, 1),
-           (9045199822095908, 3, 3);
+    VALUES (9045199822095908, 1, 1), (9045199822095908, 2, 1), (9045199822095908, 3, 3),
+           (5655194264112797, 1, 1), (5655194264112797, 3, 3), (5655194264112797, 4, 1);
 INSERT INTO Escreve_CVLattes_Lingua_NivelLingua
-    VALUES (9045199822095908, 1, 1);
-INSERT INTO Le_CVLattes_Lingua_NivelLingua
     VALUES (9045199822095908, 1, 1),
-           (9045199822095908, 3, 2);
+           (5655194264112797, 1, 1), (5655194264112797, 3, 3), (5655194264112797, 4, 1);
+INSERT INTO Le_CVLattes_Lingua_NivelLingua
+    VALUES (9045199822095908, 1, 1), (9045199822095908, 3, 2),
+           (5655194264112797, 1, 1), (5655194264112797, 3, 2), (5655194264112797, 4, 1);
 
 -- Formacao
 
@@ -113,11 +113,10 @@ VALUES (1, 1991, 1995, 'Projeto conceitual, lógico e físico de um sistema de c
        (3, 2002, 2006, 'Enhancing Spatial Association Rule Mining in Geographic Databases', 5, 9045199822095908, 3, 10, NULL, 1);
 
 INSERT INTO Conceito
-VALUES (1, 'Capes 7'),
-       (2, 'Capes 8');
+VALUES (1, 'Capes 7');
 
 INSERT INTO ConceitoDoCurso_Curso_Conceito_Instituicao
-VALUES (1, 2, 1),
+VALUES (1, 1, 1),
        (2, 1, 1);
 
 INSERT INTO CursosDaInstituicao
