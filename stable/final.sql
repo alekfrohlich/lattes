@@ -149,7 +149,7 @@ CREATE TABLE FormacaoAcademica (
     codFormacao integer PRIMARY KEY,
     anoInicio integer,
     anoFim integer,
-    TituloTrabalhoDeConclusao varchar(40),
+    TituloTrabalhoDeConclusao varchar(200),
     fk_Instituicao_codInstituicao integer,
     fk_CVLattes_LattesID bigint,
     fk_Titulacao_codTitulacao integer,
@@ -416,7 +416,7 @@ CREATE TABLE MembroDaBanca (
 
 CREATE TABLE Editora (
     codEditora integer PRIMARY KEY,
-    Nome varchar(20),
+    Nome varchar(40),
     fk_Cidade_codCidade integer
 );
 
