@@ -50,9 +50,9 @@ INSERT INTO CVLattes
            (5655194264112797, NULL, 4837217543, 'http://inf.ufsc.br/~alvares', NULL, NULL, 1, NULL, NULL),
            (2, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL),
            (3, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL),
-           (4, NULL, 6172537819, 'linguistics.mit.edu/user/chomsky/', 840, null, 2, null, null),
-           (5, NULL, 6172537930, 'http://www-math.mit.edu/~rstan/', 380, null, 3, null, null),
-           (6, NULL, 3, 'https://people.math.carleton.ca/~daniel/', 4372, null, 4, null, null);
+           (4, NULL, 6172537819, 'linguistics.mit.edu/user/chomsky/', 840, NULL, 2, NULL, NULL),
+           (5, NULL, 6172537930, 'http://www-math.mit.edu/~rstan/', 380, NULL, 3, NULL, NULL),
+           (6, NULL, 3, 'https://people.math.carleton.ca/~daniel/', 4372, NULL, 4, NULL, NULL);
 
 INSERT INTO Pessoa (codPessoa, Nome, LattesID)
     VALUES (1, 'Vania Bogorny', 9045199822095908),
@@ -88,10 +88,10 @@ INSERT INTO Fala_CVLattes_Lingua_NivelLingua
     VALUES (9045199822095908, 1, 1), (9045199822095908, 2, 1), (9045199822095908, 3, 3),
            (5655194264112797, 1, 1), (5655194264112797, 3, 3), (5655194264112797, 4, 1);
 INSERT INTO Escreve_CVLattes_Lingua_NivelLingua
-    VALUES (9045199822095908, 1, 1),
+    VALUES (9045199822095908, 1, 1), (9045199822095908, 2, 2), (9045199822095908, 3, 2),
            (5655194264112797, 1, 1), (5655194264112797, 3, 3), (5655194264112797, 4, 1);
 INSERT INTO Le_CVLattes_Lingua_NivelLingua
-    VALUES (9045199822095908, 1, 1), (9045199822095908, 3, 2),
+    VALUES (9045199822095908, 1, 1), (9045199822095908, 2, 2), (9045199822095908, 3, 2),
            (5655194264112797, 1, 1), (5655194264112797, 3, 2), (5655194264112797, 4, 1);
 
 -- Formacao
@@ -140,10 +140,10 @@ VALUES (1, 'O melhor  TCC da computacao', 2021, TRUE, 2, 1, 1, NULL, 90451998220
 -- INSERT INTO AutorArtigoEmPeriodico
 
 INSERT INTO Editora
-    VALUES (1, 'Cambridge University Press', null),
-           (2, 'Pearson Education Inc.', null),
-           (3, 'MIT Press', null),
-           (4, 'CRC Press', null);
+    VALUES (1, 'Cambridge University Press', NULL),
+           (2, 'Pearson Education Inc.', NULL),
+           (3, 'MIT Press', NULL),
+           (4, 'CRC Press', NULL);
 INSERT INTO Livro
     VALUES (1, 2014, 11, 1, 258, 'Aspects of the Theory of Syntax', 3),
            (2, 1997, 1, 2, 725, 'Enumerative Combinatorics', 1),
